@@ -14,10 +14,10 @@ export default function SurfaceCanvas({
   material?: MotionValue<number>;
 }) {
   const host = useRef<HTMLDivElement>(null);
-  const values = useRef({ surface, glow, speed });
+  const values = useRef({ surface, glow, speed, materialValue });
   useEffect(() => {
-    values.current = { surface, glow, speed };
-  }, [surface, glow, speed]);
+    values.current = { surface, glow, speed, materialValue };
+  }, [surface, glow, speed, materialValue]);
   useEffect(() => {
     const el = host.current;
     if (!el || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -55,6 +55,12 @@ void main(){vec2 uv=vUv;float grain=hash(floor(uv*950.));float blend=clamp(uSurf
       renderer.setSize(el.clientWidth, el.clientHeight),
     );
     resize.observe(el);
+    const motionPreference = matchMedia("(prefers-reduced-motion: reduce)");
+    let reduced = motionPreference.matches;
+    const preferenceChange = () => {
+      reduced = motionPreference.matches;
+    };
+    motionPreference.addEventListener("change", preferenceChange);
     let visible = true,
       frame = 0,
       last = 0;
@@ -69,7 +75,8 @@ void main(){vec2 uv=vUv;float grain=hash(floor(uv*950.));float blend=clamp(uSurf
         (e.clientY - b.top) / b.height,
       );
     };
-    const pointerArea = el.parentElement || el;
+    const pointerArea =
+      el.closest<HTMLElement>(".scene") || el.parentElement || el;
     pointerArea.addEventListener("pointermove", move);
     let lost = false;
     const loss = (e: Event) => {
@@ -88,15 +95,16 @@ void main(){vec2 uv=vUv;float grain=hash(floor(uv*950.));float blend=clamp(uSurf
       const dt = Math.min((t - last) / 1000, 0.05);
       last = t;
       if (!visible || document.hidden || lost) return;
-      uniforms.uTime.value += dt * values.current.speed;
+      if (!reduced) uniforms.uTime.value += dt * values.current.speed;
       uniforms.uSurface.value =
-        (materialValue?.get() ?? values.current.surface) / 100;
+        (values.current.materialValue?.get() ?? values.current.surface) / 100;
       uniforms.uGlow.value = values.current.glow;
       renderer.render(scene, camera);
     }
     frame = requestAnimationFrame(animate);
     return () => {
       cancelAnimationFrame(frame);
+      motionPreference.removeEventListener("change", preferenceChange);
       resize.disconnect();
       observer.disconnect();
       pointerArea.removeEventListener("pointermove", move);

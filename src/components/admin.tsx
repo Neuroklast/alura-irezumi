@@ -96,7 +96,7 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
     <div className="admin-shell">
       <aside className="admin-sidebar">
         <Link href="/" className="brand">
-          ALURA<span>STUDIO</span>
+          ALURA<span>ATELIER</span>
         </Link>
         <span className="admin-mode">
           <span className="tiny-dot" />
@@ -672,7 +672,7 @@ export function Login() {
   return (
     <main className="login-page">
       <Link className="brand" href="/">
-        ALURA<span>STUDIO</span>
+        ALURA<span>ATELIER</span>
       </Link>
       <form
         className="panel"

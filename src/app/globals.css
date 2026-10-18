@@ -792,11 +792,11 @@ main#main {
 }
 .selected-item.item-1 {
   margin-top: 85px;
-  transform: rotate(2deg);
+  rotate: 2deg;
 }
 .selected-item.item-2 {
   margin-top: 160px;
-  transform: rotate(-2deg);
+  rotate: -2deg;
 }
 .work-card {
   display: block;
@@ -2339,5 +2339,15 @@ dialog.edit-panel::backdrop {
   }
   .surface-caustic {
     background: linear-gradient(120deg, transparent, #fff1, transparent);
+  }
+}
+
+.button:focus-visible {
+  outline-offset: -4px;
+}
+@media (max-width: 650px) {
+  body:has(.admin-shell),
+  body:has(.login-page) {
+    padding-bottom: 0;
   }
 }

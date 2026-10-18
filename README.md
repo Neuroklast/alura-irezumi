@@ -13,10 +13,10 @@ npm ci
 npm run dev
 ```
 
-- `/`: animierter Hero mit Materialwechsel, ausgewählte Arbeiten, Spiegelbereich und Artist-Abschnitt
+- `/`: animierter Hero mit Materialwechsel, ausgewählte Arbeiten, Spiegelbereich und Abschnitt über Laura
 - `/work`: filterbare Kollektion mit tastaturbedienbarer Detailansicht
 - `/contact`: getrennte Tattoo- und Gravuranfragen
-- `/admin`: Hero Studio, Arbeiten und Motive, Bildverwaltung, Profil und Anfragen
+- `/admin`: Startbild-Editor, Arbeiten und Motive, Bildverwaltung, Profil und Anfragen
 - `/legal`: ausdrücklich vorläufige rechtliche Hinweise
 
 ## Demo-Modus
@@ -29,13 +29,28 @@ Kontaktanfragen werden in der Demo validiert, aber **weder gespeichert noch vers
 
 Alle mitgelieferten Arbeiten sind selbst erstellte illustrative SVG-Studien. Sie sind **keine echten Tätowierungen, keine Fotos und keine Originalarbeiten von Laura**. Auch Biografie und englische Headlines sind vorläufige Redaktionstexte. Originalfotos, Logo und abgestimmte Texte vor dem echten Start ersetzen.
 
-## Hero Studio
+## Startbild-Editor
 
-Der öffentliche Hero und der Editor nutzen dieselbe Komponente. Die Materialgrenze lässt sich zwischen Spiegel und stilisierter Haut verschieben. WebGL erzeugt Licht, Reflexionsbänder und Materialtextur. SVG-Pfade werden als Kontur gezeichnet. Ohne WebGL und bei reduzierter Bewegung bleibt eine CSS-Darstellung bedienbar.
+Der öffentliche Hero und der Editor nutzen dieselbe Komponente. Der Materialwechsel wird am Desktop direkt durch die horizontale Mausposition gesteuert. Auf Touchgeräten verändert horizontales Wischen die Ansicht ausgehend vom aktuellen Zustand. Vertikales Scrollen und Vergrößern per Zweifingergeste bleiben möglich. Es gibt keinen öffentlichen Schieberegler und keine sichtbare Vergleichsnaht. Für Tastaturbedienung sind Materialknöpfe sowie Pfeiltasten, Pos1 und Ende verfügbar. WebGL erzeugt Licht, Reflexionsbänder und Materialtextur. SVG-Pfade werden als Kontur gezeichnet. Ohne WebGL und bei reduzierter Bewegung bleibt eine CSS-Darstellung bedienbar.
 
-Drei vorbereitete Konturmotive sind enthalten. Eigene Motive als **transparentes PNG oder WebP** unter „Arbeiten & Motive“ hochladen, Bereich „Motiv / Flash“ auswählen und anschließend im Hero Studio auswählen. Beliebige Rasterbilder werden über einen Masken-Reveal eingeblendet. Es gibt keine automatische Vektorisierung und keinen vorgetäuschten Pfadverlauf. Ein deckender Hintergrund wird als deckende Fläche dargestellt.
+Drei vorbereitete Konturmotive sind enthalten. Eigene Motive als **transparentes PNG oder WebP** unter „Arbeiten & Motive“ hochladen, Bereich „Freies Motiv“ auswählen und anschließend im Startbild-Editor auswählen. Beliebige Rasterbilder werden über einen Maskenanimation eingeblendet. Es gibt keine automatische Vektorisierung und keinen vorgetäuschten Pfadverlauf. Ein deckender Hintergrund wird als deckende Fläche dargestellt.
 
-Materialgrenze, Lichtintensität und Geschwindigkeit sind editierbar. Der Effekt ist eine illustrative Materialstudie. Er simuliert nicht den anatomisch korrekten Transfer eines existierenden Tattoos auf ein anderes Foto. Portfolioaufnahmen bleiben unverändert.
+Materialmischung, Lichtintensität und Geschwindigkeit sind editierbar. Der Effekt ist eine illustrative Materialstudie. Er simuliert nicht den anatomisch korrekten Transfer eines existierenden Tattoos auf ein anderes Foto. Portfolioaufnahmen bleiben unverändert.
+
+## Gestaltung und Interaktion
+
+Die öffentliche Seite verwendet deutsche Texte, eine schmale Plakatschrift, offene Bildkompositionen und dunkle Violettflächen statt heller Agentursektionen. Die Seitennavigation zeigt japanische Zahlzeichen von 一 bis 五 neben deutschen Beschriftungen. Am Desktop reagieren die Linien auf die Nähe des Zeigers. Auf kleinen Displays wird daraus eine dauerhaft erreichbare Navigation am unteren Rand.
+
+Spiegelarbeiten erhalten eine leichte Neigung und einen an der Zeigerposition orientierten Lichtreflex. Das Originalbild wird nicht durch einen Materialshader ersetzt. Der Hero hat eine kleine lokale Wellenverzerrung, die während des Materialwechsels sichtbar wird. Es gibt keine globale Fluid-Simulation und keinen Kamerazugriff.
+
+Die eigenen Komponenten orientieren sich an diesen Interaktionsreferenzen:
+
+- [React Bits: Morph Slider](https://reactbits.dev/components/morph-slider)
+- [React Bits: Line Sidebar](https://reactbits.dev/components/line-sidebar)
+- [React Bits: Reflective Card](https://reactbits.dev/components/reflective-card)
+- [React Bits: Splash Cursor](https://reactbits.dev/animations/splash-cursor)
+
+Das sind gestalterische Referenzen. Die Implementierung nutzt eigene Pointer-, Motion- und Three.js-Komponenten, keine übernommenen React-Bits-Quelldateien.
 
 ## Deployment auf Vercel
 
@@ -114,7 +129,7 @@ Nach Ergänzung der rechtlichen Angaben und Festlegung von Speicherfristen:
 - `SUPABASE_SERVICE_ROLE_KEY` (Servervariable)
 - `RATE_LIMIT_SECRET` (zufälliges Geheimnis, mindestens 32 zufällige Bytes)
 
-Anfragen werden in Supabase gespeichert und im Admin angezeigt. **Es wird keine Benachrichtigungsmail verschickt.** Regelmäßig im Studio nachsehen oder später einen eigenen Mailanbieter ergänzen.
+Anfragen werden in Supabase gespeichert und im Admin angezeigt. **Es wird keine Benachrichtigungsmail verschickt.** Regelmäßig im Atelier nachsehen oder später einen eigenen Mailanbieter ergänzen.
 
 Der Endpoint prüft Eingaben, Einwilligung, Payloadgröße und Origin. Ein Honeypot filtert einfache Bots. Ein atomarer Datenbankzähler begrenzt Anfragen auf fünf pro Stunde und IP-Fingerprint. Der Endpoint verwendet dafür ausschließlich den von Vercel kontrollierten `x-vercel-forwarded-for`-Header. Außerhalb von Vercel ist die Live-Annahme deaktiviert, bis ein vertrauenswürdiger IP-Adapter implementiert wurde. IP-Adressen werden nicht im Klartext in der Anwendung gespeichert. Alte Rate-Limit-Einträge werden bei Folgeanfragen nach 24 Stunden entfernt. Infrastruktur-Logs hängen vom Anbieter ab.
 
@@ -130,4 +145,4 @@ npm run build
 
 GitHub Actions führt dieselben Prüfungen bei Push und Pull Request aus. Versionen und Lockfile sind festgeschrieben. Schriften werden lokal ausgeliefert, es werden keine Google-Fonts- oder Instagram-Embeds geladen.
 
-Automatisierte Tests decken Demofallback, Bildquellenvalidierung, Payloadgrenzen, Origin-Prüfung, Einwilligung und den Demo-Anfrageweg ab. Live-Anmeldung, R2-CORS und Datenbank-RLS müssen mit den tatsächlichen Accounts zusätzlich integriert geprüft werden. WebGL-Darstellung, Touch-Bedienung und responsive Layouts benötigen eine visuelle Prüfung auf echten Geräten. In dieser Entwicklungsumgebung stand kein Browser für visuelle QA zur Verfügung.
+Automatisierte Tests decken Demofallback, Bildquellenvalidierung, Payloadgrenzen, Origin-Prüfung, Einwilligung, den Demo-Anfrageweg und die Gestenerkennung ab. Ein gerenderter HTML-Test prüft außerdem die deutschen Überschriften, die Kanji-Navigation und die Abwesenheit eines öffentlichen Range-Eingabefelds. Live-Anmeldung, R2-CORS und Datenbank-RLS müssen mit den tatsächlichen Accounts zusätzlich integriert geprüft werden. WebGL-Darstellung, Touch-Bedienung und responsive Layouts benötigen eine visuelle Prüfung auf echten Geräten. In dieser Entwicklungsumgebung stand kein Browser für visuelle QA zur Verfügung.
