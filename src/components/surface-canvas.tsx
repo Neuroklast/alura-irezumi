@@ -71,7 +71,8 @@ export default function SurfaceCanvas({
       vertexShader:
         "varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position,1.);}",
       fragmentShader: `precision mediump float;varying vec2 vUv;uniform float uTime,uSurface,uGlow;uniform vec2 uPointer;uniform sampler2D uEnvironment;uniform float uEnvironmentReady;
-float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+// Keep intermediates below the guaranteed mediump range on mobile GPUs.
+float hash(vec2 p){p=fract(p*vec2(.1031,.11369));p+=dot(p,p.yx+19.19);return fract((p.x+p.y)*p.x);}
 void main(){vec2 uv=vUv;float grain=hash(floor(uv*950.));float blend=clamp(uSurface,0.,1.);float activity=sin(blend*3.14159265);vec2 delta=uv-uPointer;float ripple=sin(length(delta)*34.-uTime*1.4)*exp(-length(delta)*5.);uv+=vec2(ripple,-ripple)*.025*activity;float sweep=pow(max(0.,sin(uv.x*3.4+uv.y*2.2+uPointer.x*.8+uTime*.07)),12.);float edge=pow(abs(uv.x-.5)*2.,3.);vec3 glass=vec3(.12,.10,.17)+sweep*vec3(.58,.52,.65)+edge*vec3(.1,.16,.20);glass+=uGlow*vec3(.28,.035,.24)*pow(1.-uv.x,4.);glass+=uGlow*vec3(.015,.22,.29)*pow(uv.x,6.);vec2 envUv=vec2(clamp(1.-uv.x*.8+uPointer.x*.05,.05,.95),clamp(.82+uv.y*.16,.82,.99));vec3 reflected=(texture2D(uEnvironment,envUv).rgb+texture2D(uEnvironment,envUv+vec2(.025,-.015)).rgb)*.5;glass=mix(glass,reflected*.65+vec3(.055,.04,.08)+sweep*vec3(.3,.34,.36),uEnvironmentReady*.8);vec3 col=glass;col+=activity*vec3(.06,.02,.07)*ripple;gl_FragColor=vec4(col+(grain-.5)*.014,1.);}`,
     });
     scene.add(new THREE.Mesh(geometry, material));
