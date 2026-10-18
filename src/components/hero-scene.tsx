@@ -1,8 +1,9 @@
 "use client";
 import dynamic from "next/dynamic";
-import { useEffect, useId, useRef, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import {
   motion,
+  AnimatePresence,
   useMotionValue,
   useSpring,
   useReducedMotion,
@@ -51,6 +52,40 @@ export function HeroScene({
   useEffect(() => {
     target.set(scene.surface);
   }, [scene.surface, target]);
+  const inkSource = scene.customImage || motifs[scene.motif].image;
+  const engravingSource =
+    scene.customImage || motifs[scene.motif].engravingImage;
+  const [artwork, setArtwork] = useState({
+    ink: inkSource,
+    engraving: engravingSource,
+    revision: 0,
+  });
+  useEffect(() => {
+    if (artwork.ink === inkSource && artwork.engraving === engravingSource)
+      return;
+    let cancelled = false;
+    // Keep the current motif visible until both new material variants are decoded.
+    const decode = (src: string) => {
+      const image = new Image();
+      image.src = src;
+      return image.decode();
+    };
+    void Promise.allSettled([decode(inkSource), decode(engravingSource)]).then(
+      () => {
+        if (!cancelled)
+          setArtwork((previous) => ({
+            ink: inkSource,
+            engraving: engravingSource,
+            revision: previous.revision + 1,
+          }));
+      },
+    );
+    return () => {
+      cancelled = true;
+    };
+    // Only a new requested source starts a load; completed loads must not restart it.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inkSource, engravingSource]);
   function position(e: React.PointerEvent<HTMLDivElement>) {
     const b = e.currentTarget.getBoundingClientRect();
     px.set(clamp(((e.clientX - b.left) / b.width) * 100));
@@ -147,20 +182,32 @@ export function HeroScene({
             <div className="skin-surface" aria-hidden="true">
               <img src="/art/skin-natural.webp" alt="" draggable={false} />
             </div>
-            <img
-              className="hero-motif custom-motif engraving"
-              src={scene.customImage || motifs[scene.motif].engravingImage}
-              alt=""
-              draggable={false}
-            />
-            <div className="ink-clip">
-              <img
-                className="hero-motif custom-motif ink"
-                src={scene.customImage || motifs[scene.motif].image}
-                alt=""
-                draggable={false}
-              />
-            </div>
+            <AnimatePresence initial={false} mode="sync">
+              <motion.div
+                key={artwork.revision}
+                className="scene-artwork"
+                data-initial={artwork.revision === 0}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: reduced ? 0 : 0.45, ease: "easeInOut" }}
+              >
+                <img
+                  className="hero-motif custom-motif engraving"
+                  src={artwork.engraving}
+                  alt=""
+                  draggable={false}
+                />
+                <div className="ink-clip">
+                  <img
+                    className="hero-motif custom-motif ink"
+                    src={artwork.ink}
+                    alt=""
+                    draggable={false}
+                  />
+                </div>
+              </motion.div>
+            </AnimatePresence>
             <div className="surface-caustic" aria-hidden="true" />
           </div>
         </div>

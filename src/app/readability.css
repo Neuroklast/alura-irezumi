@@ -736,3 +736,13 @@
     transition: none;
   }
 }
+
+/* Fade both material variants together on the existing perspective plane. */
+.scene-artwork {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.scene .glass-pane .scene-artwork[data-initial="false"] .hero-motif.engraving {
+  animation: none;
+}
