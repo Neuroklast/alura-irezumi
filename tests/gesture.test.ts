@@ -1,3 +1,4 @@
+import { galleryIndexFromSwipe } from "../src/lib/gesture";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
@@ -31,4 +32,18 @@ test("zero-width scenes never produce NaN or Infinity during resize", () => {
   assert.equal(surfaceFromSwipe(35, 100, 0), 35);
   assert.equal(clamp(-50), 0);
   assert.equal(clamp(150), 100);
+});
+
+test("gallery swipes advance exactly one motif and remain bounded", () => {
+  assert.equal(galleryIndexFromSwipe(1, -60, 4, 4), 2);
+  assert.equal(galleryIndexFromSwipe(2, 60, 4, 4), 1);
+  assert.equal(galleryIndexFromSwipe(3, -200, 0, 4), 3);
+  assert.equal(galleryIndexFromSwipe(0, 200, 0, 4), 0);
+  assert.equal(galleryIndexFromSwipe(0, -60, 0, 0), 0);
+});
+test("gallery taps, vertical scrolling and diagonal scrolling do not select another motif", () => {
+  assert.equal(galleryIndexFromSwipe(1, 6, 1, 4), 1);
+  assert.equal(galleryIndexFromSwipe(1, 31, 0, 4), 1);
+  assert.equal(galleryIndexFromSwipe(1, 5, 70, 4), 1);
+  assert.equal(galleryIndexFromSwipe(1, 50, 50, 4), 1);
 });

@@ -5,6 +5,7 @@ import { ArrowUpRight, ArrowDown, X, MoveRight, Check } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { useStudio } from "./studio-provider";
 import { HeroScene } from "./hero-scene";
+import { MotifGallery } from "./motif-gallery";
 import { LineSidebar } from "./line-sidebar";
 import { ReflectiveWork } from "./reflective-work";
 import { motifs, type MotifKey } from "@/lib/motifs";
@@ -131,26 +132,7 @@ export function Home() {
             <HeroScene
               scene={scene}
               interactive
-              motifPicker={
-                <div
-                  className="scene-motif-dots"
-                  role="group"
-                  aria-label="Motiv auswählen"
-                >
-                  {Object.entries(motifs).map(([key, entry]) => (
-                    <button
-                      type="button"
-                      key={key}
-                      aria-label={entry.name}
-                      aria-pressed={motif === key}
-                      title={entry.name}
-                      onClick={() => setMotif(key as MotifKey)}
-                    >
-                      <span aria-hidden="true" />
-                    </button>
-                  ))}
-                </div>
-              }
+              motifPicker={<MotifGallery value={motif} onChange={setMotif} />}
             />
           </div>
           <Link href="#selected" scroll={!!reduced} className="scroll-cue">
