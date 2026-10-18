@@ -589,7 +589,10 @@
 }
 
 /* Restore only the physical mirror and engraving from 333c7e8.
-   The separate skin layer retains the current photo, size and black artwork. */
+   Skin and engraving share this same perspective plane. */
+.public-site .scene {
+  overflow: visible;
+}
 .scene .glass-pane {
   height: 88%;
   width: 57%;
@@ -602,7 +605,6 @@
     10px 18px 65px #0006;
   clip-path: polygon(0 0, 100% 1%, 100% 100%, 0 99%);
   padding: 1px;
-  opacity: calc(1 - var(--material, 0) * 0.01);
 }
 .scene .glass-pane-surface {
   overflow: hidden;
@@ -618,7 +620,7 @@
 .scene .glass-pane .surface-canvas {
   mask-image: none;
   -webkit-mask-image: none;
-  opacity: 1;
+  opacity: calc(1 - var(--material, 0) * 0.01);
 }
 .scene .glass-pane .hero-motif {
   width: 90%;
@@ -628,25 +630,16 @@
 }
 .scene .glass-pane .hero-motif.engraving {
   filter: none;
-  opacity: 0.8;
+  opacity: calc(0.8 * (1 - var(--material, 0) * 0.01));
   animation: raster-reveal var(--duration, 3s) ease both;
 }
 .scene .glass-pane .surface-caustic {
   display: block;
 }
-.skin-preview {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-.skin-preview .hero-motif {
-  width: 74%;
-  height: 93%;
-  left: 13%;
-  top: 3.5%;
-  object-fit: contain;
-  filter: none;
-  animation: none;
+/* The supplied skin photo fills the same pane without feathered edges. */
+.scene .glass-pane .skin-surface {
+  mask-image: none;
+  -webkit-mask-image: none;
 }
 .scene.compact .glass-pane {
   width: 42%;
