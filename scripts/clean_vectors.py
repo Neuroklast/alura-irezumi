@@ -25,16 +25,20 @@ def clean(path):
     root.set('viewBox',f'{x0-pad:.2f} {y0-pad:.2f} {x1-x0+2*pad:.2f} {y1-y0+2*pad:.2f}')
     root.set('preserveAspectRatio','xMidYMid meet')
     root.attrib.pop('width',None);root.attrib.pop('height',None)
-    root.find('{'+NS+'}title').text=({'marowak':'Alola-Knogga','mew':'Mew','espeon':'Psiana','vaporeon':'Aquana'}[path.stem])+' – Wannado von ALURA IREZUMI'
-    # Shade paths use ink alpha, so real skin remains visible through them.
-    for group in root.iter('{'+NS+'}g'):
-        shade=group.get('data-layer')=='shade'
-        for element in group.iter('{'+NS+'}path'):
-            element.set('fill', '#17121e')
-            if shade: element.set('fill-opacity','0.28')
+    title=root.find('{'+NS+'}title')
+    if title is None:title=ET.SubElement(root,'{'+NS+'}title')
+    title.set('id','title');root.set('aria-labelledby','title');root.attrib.pop('aria-label',None)
+    title.text=({'marowak':'Alola-Knogga','mew':'Mew','espeon':'Psiana','vaporeon':'Aquana'}[path.stem])+' – Wannado von ALURA IREZUMI'
+    # Keep only the artist's black contour layer, with unpainted space transparent.
+    for parent in root.iter():
+        for child in list(parent):
+            if child.get('data-layer')=='shade':parent.remove(child)
+    for element in root.iter():
+        if element.tag in ['{'+NS+'}path','{'+NS+'}g']:
+            element.set('fill','#000000')
+            element.attrib.pop('fill-opacity',None)
+            element.attrib.pop('opacity',None)
     tree.write(path,encoding='unicode')
-    for element in root.iter('{'+NS+'}path'):
-        element.set('fill', '#e9efff')
     tree.write(path.with_name(path.stem+'-engraving.svg'),encoding='unicode')
     return list(bounds.bounds)
 

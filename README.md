@@ -27,7 +27,7 @@ Demo-Inhalte und eigene Uploads können über `/admin` bearbeitet werden. „Spe
 
 Kontaktanfragen werden in der Demo validiert, aber **weder gespeichert noch versendet**. Bei gesperrtem oder vollem Browserspeicher erscheint ein Hinweis. Uploads sind in der Demo auf 2 MB pro Bild begrenzt. Für eine größere Sammlung kleinere Bilder verwenden.
 
-Die vier Standardmotive sind **Mew, Psiana, Alola-Knogga und Aquana** aus den vom Auftraggeber bereitgestellten ALURA-Posts. Es handelt sich um **Wannado-Entwürfe**, nicht um Fotos ausgeführter Tattoos. Sie wurden freigestellt und in echte SVG-Pfade mit separaten Kontur- und Graustufenebenen umgewandelt. Die Dateien enthalten keine eingebetteten Screenshots. Verfügbarkeit und freie Termine werden nicht aus alten Posts übernommen.
+Die vier Standardmotive sind **Mew, Psiana, Alola-Knogga und Aquana** aus den vom Auftraggeber bereitgestellten ALURA-Posts. Es handelt sich um **Wannado-Entwürfe**, nicht um Fotos ausgeführter Tattoos. Sie wurden freigestellt und in echte SVG-Pfade mit reinen schwarzen Konturen umgewandelt. Die Dateien enthalten keine eingebetteten Screenshots. Verfügbarkeit und freie Termine werden nicht aus alten Posts übernommen.
 
 Das bereitgestellte Portrait von Laura ist als komprimiertes WebP eingebunden. Instagram-Bedienelemente, Kommentare und Nutzerbilder aus den Post-Screenshots werden nicht veröffentlicht. Die zuvor erstellten Beispielzeichnungen wurden aus dem Projekt entfernt. Bekannte alte Seed-Einträge werden beim Laden ersetzt, eigene Uploads und selbst geänderte Texte bleiben erhalten.
 
@@ -155,8 +155,8 @@ Automatisierte Tests prüfen auch, dass die SVG-Motive echte Pfade ohne eingebet
 
 ### Transparenz und Bildrechte
 
-Die Motivdateien und ihre hellen Gravurvarianten bestehen aus SVG-Pfaden ohne Hintergrundfläche. Die Darstellung verwendet keine Farbfilter oder Mischmodi auf den Motiven. `scripts/clean_vectors.py` erzeugt beide Varianten mit identischem, eng beschnittenem ViewBox. Die Wortmarke unter `public/brand` enthält echte Vektorpfade; die Schriftlizenz liegt daneben.
+Die Motivdateien enthalten ausschließlich schwarze Konturpfade ohne Hintergrundfläche und ohne graue Schattierung. Alola-Knogga und Aquana nutzen die vom Auftraggeber gelieferten Kontur-SVGs. Die Darstellung verwendet keine Farbfilter oder Mischmodi auf den Motiven. `scripts/clean_vectors.py` erzeugt beide Varianten mit identischem, eng beschnittenem ViewBox. Die Wortmarke unter `public/brand` enthält echte Vektorpfade; die Schriftlizenz liegt daneben.
 
-Die Hautvorschau nutzt eine echte Fotografie von Pixnio, gespiegelt auf [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Image_skin_texture.jpg), unter CC0, einschließlich kommerzieller Nutzung. Herkunft, Lizenz und Bearbeitung stehen in `public/art/licenses.json`. Es handelt sich um eine Materialvorschau, nicht um ein Foto eines ausgeführten Tattoos.
+Die Hautvorschau nutzt das vom Auftraggeber ausdrücklich ausgewählte zweite Bild `image(20261018-111319).png`. Die frühere Makroaufnahme wurde entfernt. Die Datei wird vollständig als WebP übernommen. Die Herkunft steht in `public/art/licenses.json`; eine unabhängige Stock-Lizenz wurde nicht mitgeliefert und wird nicht behauptet. Es handelt sich um eine Materialvorschau, nicht um ein Foto eines ausgeführten Tattoos.
 
 Die deutschen Pokémon-Namen wurden anhand offizieller Pokémon-Seiten geprüft. Das Motiv mit brennendem Knochen ist Alola-Knogga: https://www.pokemon.com/de/pokemon-sammelkartenspiel/Produktgalerie/kollektion-alola-knogga-gx .

@@ -1,15 +1,10 @@
 {
-  "skin-cc0.webp": {
-    "title": "Image skin texture",
+  "skin-natural.webp": {
+    "title": "Hautvorlage des Auftraggebers, Bild 2",
     "type": "photograph",
-    "sourcePage": "https://pixnio.com/textures-and-patterns/human-skin",
-    "sourceMirror": "https://commons.wikimedia.org/wiki/File:Image_skin_texture.jpg",
-    "originalFile": "https://upload.wikimedia.org/wikipedia/commons/7/75/Image_skin_texture.jpg",
-    "author": "Pixnio / PPD; Commons records the photographer as unknown",
-    "license": "CC0-1.0",
-    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "commercialUseAllowed": true,
-    "modifications": "Downscaled to 1600px and encoded as WebP. No generated image content.",
-    "verifiedOn": "2026-10-18"
+    "source": "image(20261018-111319).png",
+    "license": "User-provided asset; no independent stock license supplied",
+    "modifications": "WebP encoding only; full image retained without crop or macro zoom",
+    "receivedOn": "2026-10-18"
   }
 }

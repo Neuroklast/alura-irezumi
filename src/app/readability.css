@@ -135,7 +135,7 @@
 }
 .skin-surface {
   opacity: calc(var(--material, 0) * 0.01);
-  background: #bb9471;
+  background: #d4a88e;
   overflow: hidden;
 }
 .skin-surface > img {
@@ -273,7 +273,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(110deg, #1f1730, #77718a44 45%, #11283855);
+  background: linear-gradient(110deg, #a8aeb9, #e8e6ef 45%, #9dabb7);
   -webkit-mask-image: linear-gradient(
     90deg,
     transparent,
@@ -570,4 +570,20 @@
   body {
     padding-bottom: calc(78px + env(safe-area-inset-bottom));
   }
+}
+
+/* Readable black contours when WebGL is unavailable or motion is reduced. */
+.glass-pane-surface::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, #c5c9d1, #f0edf3 48%, #a7b8c4);
+  opacity: calc(1 - var(--material, 0) * 0.01);
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 9%,
+    #000 91%,
+    transparent
+  );
 }

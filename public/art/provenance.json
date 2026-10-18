@@ -3,13 +3,8 @@
     "file": "mew.svg",
     "title": "Mew",
     "source": "image(20261018-102613).png",
-    "crop": [
-      88,
-      124,
-      450,
-      1021
-    ],
-    "method": "two-layer neutral-ink vector trace",
+    "crop": [88, 124, 450, 1021],
+    "method": "black contours only, transparent background",
     "artist": "ALURA IREZUMI",
     "kind": "Wannado / design, not an executed tattoo"
   },
@@ -17,41 +12,24 @@
     "file": "espeon.svg",
     "title": "Psiana",
     "source": "image(20261018-102613).png",
-    "crop": [
-      430,
-      114,
-      799,
-      1045
-    ],
-    "method": "two-layer neutral-ink vector trace",
+    "crop": [430, 114, 799, 1045],
+    "method": "black contours only, transparent background",
     "artist": "ALURA IREZUMI",
     "kind": "Wannado / design, not an executed tattoo"
   },
   {
     "file": "marowak.svg",
     "title": "Alola-Knogga",
-    "source": "Screenshot 2026-10-18 122536.png",
-    "crop": [
-      17,
-      23,
-      385,
-      962
-    ],
-    "method": "two-layer neutral-ink vector trace",
+    "source": "tattoo_links(1).svg",
+    "method": "black contours only, transparent background",
     "artist": "ALURA IREZUMI",
     "kind": "Wannado / design, not an executed tattoo"
   },
   {
     "file": "vaporeon.svg",
     "title": "Aquana",
-    "source": "Screenshot 2026-10-18 122536.png",
-    "crop": [
-      416,
-      78,
-      839,
-      1130
-    ],
-    "method": "two-layer neutral-ink vector trace",
+    "source": "tattoo_rechts(1).svg",
+    "method": "black contours only, transparent background",
     "artist": "ALURA IREZUMI",
     "kind": "Wannado / design, not an executed tattoo"
   }

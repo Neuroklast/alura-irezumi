@@ -59,18 +59,29 @@ test("both ink and native engraving assets retain transparent unpainted space", 
       assert.equal(/<(?:rect|image|foreignObject|style)\b/.test(svg), false);
       assert.equal(/background\s*[:=]/.test(svg), false);
     }
-    assert.ok(variants[1].includes('fill="#e9efff"'));
+    for (const svg of variants) {
+      assert.equal(svg.includes('data-layer="shade"'), false);
+      const fills = [...svg.matchAll(/fill="([^"]+)"/g)].map(
+        (match) => match[1],
+      );
+      assert.ok(fills.length > 0);
+      assert.ok(fills.every((fill) => fill === "#000000"));
+      assert.equal(/(?:fill-opacity|opacity)=/.test(svg), false);
+    }
   }
 });
-test("skin photograph carries an explicit commercial-use license and branding uses vector outlines", () => {
+test("skin photograph is the supplied second image and branding uses vector outlines", () => {
   const licenses = JSON.parse(
     readFileSync(
       new URL("../public/art/licenses.json", import.meta.url),
       "utf8",
     ),
   );
-  assert.equal(licenses["skin-cc0.webp"].license, "CC0-1.0");
-  assert.equal(licenses["skin-cc0.webp"].commercialUseAllowed, true);
+  assert.equal(
+    licenses["skin-natural.webp"].source,
+    "image(20261018-111319).png",
+  );
+  assert.equal(licenses["skin-cc0.webp"], undefined);
   const logo = readFileSync(
     new URL("../public/brand/alura-wordmark.svg", import.meta.url),
     "utf8",

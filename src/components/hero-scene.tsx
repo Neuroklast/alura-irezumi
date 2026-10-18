@@ -143,7 +143,7 @@ export function HeroScene({
               material={material}
             />
             <div className="skin-surface" aria-hidden="true">
-              <img src="/art/skin-cc0.webp" alt="" draggable={false} />
+              <img src="/art/skin-natural.webp" alt="" draggable={false} />
             </div>
             <img
               className="hero-motif custom-motif engraving"
