@@ -18,9 +18,11 @@ export function SmoothScroll() {
         lerp: 0.09,
         smoothWheel: true,
         syncTouch: false,
+        stopInertiaOnNavigate: true,
         anchors: { offset: -30 },
         prevent: (node) => node.closest("dialog") !== null,
       });
+      if (document.querySelector("dialog[open]")) instance.stop();
     }
     setup();
     preference.addEventListener("change", setup);
@@ -31,6 +33,7 @@ export function SmoothScroll() {
     const observer = new MutationObserver(suspendForDialog);
     observer.observe(document.body, {
       subtree: true,
+      childList: true,
       attributes: true,
       attributeFilter: ["open"],
     });

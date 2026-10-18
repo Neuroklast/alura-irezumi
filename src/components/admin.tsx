@@ -227,7 +227,7 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
                       .length.toString()
                       .padStart(2, "0")}
                   </strong>
-                  <small>für neue Geschichten</small>
+                  <small>Motive zum Anfragen</small>
                 </div>
               </div>
               <div className="admin-overview-grid">

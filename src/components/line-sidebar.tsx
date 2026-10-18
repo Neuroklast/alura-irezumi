@@ -95,6 +95,7 @@ function Chapter({
 }) {
   const link = useRef<HTMLAnchorElement>(null);
   const reduced = useReducedMotion();
+  const pathname = usePathname();
   const proximity = useTransform(pointer, (y) => {
     const rect = link.current?.getBoundingClientRect();
     if (!rect || y < 0 || reduced) return 0;
@@ -112,6 +113,7 @@ function Chapter({
         <Link
           ref={link}
           href={`/#${chapter.id}`}
+          scroll={pathname === "/" && !reduced ? false : true}
           className={active ? "active" : ""}
           aria-current={active ? "location" : undefined}
         >

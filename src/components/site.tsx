@@ -84,6 +84,7 @@ function Reveal({
 }
 export function Home() {
   const { content } = useStudio();
+  const reduced = useReducedMotion();
   const [motif, setMotif] = useState<MotifKey>(content.scene.motif);
   useEffect(() => setMotif(content.scene.motif), [content.scene.motif]);
   const scene = {
@@ -130,10 +131,10 @@ export function Home() {
               ))}
             </div>
           </div>
-          <a href="#selected" className="scroll-cue">
+          <Link href="#selected" scroll={!!reduced} className="scroll-cue">
             <ArrowDown size={15} />
             MOTIVE ANSEHEN
-          </a>
+          </Link>
         </section>
         <section id="selected" className="section selected">
           <Reveal className="section-heading">
@@ -423,6 +424,9 @@ export function Contact() {
             rel="noreferrer"
           >
             @alura.irezumi <ArrowUpRight size={18} />
+          </a>
+          <a className="contact-email" href="mailto:alura.irezumi@gmail.com">
+            alura.irezumi@gmail.com
           </a>
           {demo && (
             <div className="notice">

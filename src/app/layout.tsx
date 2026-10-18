@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: "%s · ALURA IREZUMI",
   },
   description:
-    "Tattoos und Spiegelgravuren von Laura. Kunst zwischen Haut, Glas und Fantasie.",
+    "Tattoos und Spiegelgravuren von Laura im NEO TOKYO in Bochum. Wannados ansehen und eine Anfrage schicken.",
 };
 export default async function RootLayout({
   children,
