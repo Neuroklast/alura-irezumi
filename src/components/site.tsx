@@ -303,6 +303,7 @@ function ArtworkDialog({ work, close }: { work: Artwork; close: () => void }) {
     <dialog
       ref={ref}
       className="art-dialog"
+      aria-label={work.title}
       onCancel={close}
       onClick={(e) => {
         if (e.target === e.currentTarget) close();

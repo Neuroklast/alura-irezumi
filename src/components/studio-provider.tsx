@@ -49,7 +49,9 @@ export function StudioProvider({
         localStorage.setItem(key, JSON.stringify(valid));
         return "Demo lokal in diesem Browser gespeichert.";
       } catch {
-        return "Browserspeicher voll oder gesperrt. Änderungen gelten nur bis zum Neuladen.";
+        throw new Error(
+          "Browserspeicher voll oder gesperrt. Nicht gespeichert. Änderungen gelten nur bis zum Neuladen.",
+        );
       }
     }
     const res = await fetch("/api/content", {
