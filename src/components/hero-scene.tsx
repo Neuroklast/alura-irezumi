@@ -142,24 +142,26 @@ export function HeroScene({
               speed={scene.speed}
               material={material}
             />
-            <div className="skin-surface" aria-hidden="true">
-              <img src="/art/skin-natural.webp" alt="" draggable={false} />
-            </div>
             <img
               className="hero-motif custom-motif engraving"
               src={scene.customImage || motifs[scene.motif].engravingImage}
               alt=""
               draggable={false}
             />
-            <div className="ink-clip">
-              <img
-                className="hero-motif custom-motif ink"
-                src={scene.customImage || motifs[scene.motif].image}
-                alt=""
-                draggable={false}
-              />
-            </div>
             <div className="surface-caustic" aria-hidden="true" />
+          </div>
+        </div>
+        <div className="skin-preview" aria-hidden="true">
+          <div className="skin-surface" aria-hidden="true">
+            <img src="/art/skin-natural.webp" alt="" draggable={false} />
+          </div>
+          <div className="ink-clip">
+            <img
+              className="hero-motif custom-motif ink"
+              src={scene.customImage || motifs[scene.motif].image}
+              alt=""
+              draggable={false}
+            />
           </div>
         </div>
         <span className="scene-work-label">

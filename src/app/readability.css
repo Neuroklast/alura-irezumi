@@ -587,3 +587,100 @@
     transparent
   );
 }
+
+/* Restore only the physical mirror and engraving from 333c7e8.
+   The separate skin layer retains the current photo, size and black artwork. */
+.scene .glass-pane {
+  height: 88%;
+  width: 57%;
+  position: relative;
+  transform: perspective(1000px) rotateY(-9deg) rotateZ(4deg);
+  background: #342842;
+  box-shadow:
+    -1px 0 #c2ecff77,
+    1px 1px #e0c1ee55,
+    10px 18px 65px #0006;
+  clip-path: polygon(0 0, 100% 1%, 100% 100%, 0 99%);
+  padding: 1px;
+  opacity: calc(1 - var(--material, 0) * 0.01);
+}
+.scene .glass-pane-surface {
+  overflow: hidden;
+  background: linear-gradient(120deg, #171027, #4a305e 40%, #0b132a 80%);
+  isolation: isolate;
+}
+.scene .glass-pane-surface::before {
+  display: none;
+}
+.scene .glass-pane-surface::after {
+  display: block;
+}
+.scene .glass-pane .surface-canvas {
+  mask-image: none;
+  -webkit-mask-image: none;
+  opacity: 1;
+}
+.scene .glass-pane .hero-motif {
+  width: 90%;
+  height: 94%;
+  left: 5%;
+  top: 3%;
+}
+.scene .glass-pane .hero-motif.engraving {
+  filter: none;
+  opacity: 0.8;
+  animation: raster-reveal var(--duration, 3s) ease both;
+}
+.scene .glass-pane .surface-caustic {
+  display: block;
+}
+.skin-preview {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.skin-preview .hero-motif {
+  width: 74%;
+  height: 93%;
+  left: 13%;
+  top: 3.5%;
+  object-fit: contain;
+  filter: none;
+  animation: none;
+}
+.scene.compact .glass-pane {
+  width: 42%;
+  height: 85%;
+}
+@media (max-width: 1150px) {
+  .scene .glass-pane {
+    width: 62%;
+  }
+}
+@media (max-width: 850px) {
+  .scene .glass-pane {
+    width: 47%;
+    height: 90%;
+  }
+}
+@media (max-width: 650px) {
+  .scene .glass-pane {
+    width: 48%;
+    height: 91%;
+  }
+  .scene.compact .glass-pane {
+    width: 45%;
+    height: 85%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scene .glass-pane {
+    transform: none;
+  }
+  .scene .glass-pane .surface-caustic {
+    display: none;
+  }
+  .scene .glass-pane .hero-motif.engraving {
+    animation: none;
+  }
+}
