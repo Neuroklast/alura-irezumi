@@ -18,8 +18,8 @@ export default function Page() {
         </p>
         <h2 id="privacy">Datenschutzhinweise</h2>
         <p>
-          Im Demo-Modus werden Studio-Einstellungen und hochgeladene Demobilder
-          nur im lokalen Browserspeicher gespeichert. Du kannst sie im Studio
+          Im Demo-Modus werden Atelier-Einstellungen und hochgeladene Demobilder
+          nur im lokalen Browserspeicher gespeichert. Du kannst sie im Atelier
           über „Demo zurücksetzen“ löschen. Demo-Anfragen werden nicht
           gespeichert oder versendet.
         </p>

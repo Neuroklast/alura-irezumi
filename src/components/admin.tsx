@@ -100,12 +100,12 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
         </Link>
         <span className="admin-mode">
           <span className="tiny-dot" />
-          {demo ? "DEMO WORKSPACE" : "LIVE WORKSPACE"}
+          {demo ? "DEMO-ATELIER" : "LIVE-ATELIER"}
         </span>
-        <nav aria-label="Studio Navigation">
+        <nav aria-label="Atelier-Navigation">
           {[
             { id: "overview", label: "Übersicht", icon: LayoutDashboard },
-            { id: "hero", label: "Hero Studio", icon: Settings2 },
+            { id: "hero", label: "Startbild", icon: Settings2 },
             { id: "works", label: "Arbeiten & Motive", icon: Layers },
             { id: "enquiries", label: "Anfragen", icon: Mail },
             { id: "settings", label: "Profil & Texte", icon: ImagePlus },
@@ -136,21 +136,21 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
             </button>
           )}
           <p>
-            INK & GLASS
+            HAUT & GLAS
             <br />
-            CONTENT STUDIO / 01
+            INHALTE / 一
           </p>
         </div>
       </aside>
       <div className="admin-main">
         <header className="admin-header">
           <div>
-            <span className="eyebrow">ALURA / CONTENT STUDIO</span>
+            <span className="eyebrow">ALURA / DEIN ATELIER</span>
             <h1>
               {tab === "overview"
                 ? "Dein Atelier. Digital."
                 : tab === "hero"
-                  ? "Hero Studio"
+                  ? "Startbild"
                   : tab === "works"
                     ? "Arbeiten & Motive"
                     : tab === "enquiries"
@@ -243,7 +243,7 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
                   <HeroScene scene={content.scene} compact />
                 </div>
                 <div className="panel setup-panel">
-                  <p className="eyebrow">DEIN WORKSPACE</p>
+                  <p className="eyebrow">DEIN ATELIER</p>
                   <h2>
                     Alles beginnt
                     <br />
@@ -251,7 +251,7 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
                   </h2>
                   <p>
                     Pflege deine Arbeiten, ändere die Lichtstimmung und stelle
-                    deinen Hero zusammen.
+                    dein Startbild zusammen.
                   </p>
                   <button
                     className="button outline"
@@ -281,13 +281,13 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
             <div className="hero-editor">
               <div className="panel">
                 <div className="panel-heading">
-                  <h2>Live-Vorschau</h2>
-                  <span className="eyebrow">GLASS → INK</span>
+                  <h2>Direkte Vorschau</h2>
+                  <span className="eyebrow">GLAS / HAUT</span>
                 </div>
                 <HeroScene scene={content.scene} />
               </div>
               <div className="panel controls">
-                <p className="eyebrow">SCENE SETTINGS</p>
+                <p className="eyebrow">SZENENEINSTELLUNGEN</p>
                 <h2>Deine Inszenierung.</h2>
                 <label>
                   Motiv
@@ -316,9 +316,9 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
                       });
                     }}
                   >
-                    <option value="moth">Midnight wings</option>
-                    <option value="bloom">Wild bloom</option>
-                    <option value="serpent">The serpent</option>
+                    <option value="moth">Nachtfalter</option>
+                    <option value="bloom">Wilde Blüte</option>
+                    <option value="serpent">Die Schlange</option>
                     {content.works
                       .filter(
                         (w) =>
@@ -336,12 +336,12 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
                   Vektormotive werden entlang der Kontur gezeichnet. Eigene
                   Motive kannst du unter „Arbeiten & Motive“ als transparentes
                   PNG hochladen und hier auswählen. Rastermotive erscheinen per
-                  Masken-Reveal.
+                  Maskenanimation.
                 </p>
                 {[
                   {
                     key: "surface" as const,
-                    label: "Materialgrenze",
+                    label: "Materialmischung",
                     min: 0,
                     max: 100,
                     step: 1,
@@ -415,7 +415,15 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
                   <article className="admin-work" key={w.id}>
                     <img src={w.image} alt={w.title} />
                     <div>
-                      <span className="eyebrow">{w.category}</span>
+                      <span className="eyebrow">
+                        {
+                          {
+                            tattoo: "Tätowierung",
+                            mirror: "Spiegel",
+                            motif: "Motiv",
+                          }[w.category]
+                        }
+                      </span>
                       <h3>{w.title}</h3>
                       <p>{w.available ? "Anfragbar" : "Portfolio"}</p>
                       <button
@@ -518,7 +526,7 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
                 enquiries.map((e) => (
                   <article key={e.id} className="enquiry">
                     <p className="eyebrow">
-                      {e.type} /{" "}
+                      {e.type === "mirror" ? "Spiegelgravur" : "Tätowierung"} /{" "}
                       {new Date(e.created_at).toLocaleDateString("de-DE")}
                     </p>
                     <h3>{e.name}</h3>
@@ -579,9 +587,9 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
                   })
                 }
               >
-                <option value="tattoo">Tattoo</option>
+                <option value="tattoo">Tätowierung</option>
                 <option value="mirror">Spiegel</option>
-                <option value="motif">Motiv / Flash</option>
+                <option value="motif">Freies Motiv</option>
               </select>
             </label>
             <img

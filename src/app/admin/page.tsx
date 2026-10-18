@@ -2,7 +2,7 @@ import { Admin, Login } from "@/components/admin";
 import { isDemo } from "@/lib/config";
 import { requireAdmin } from "@/lib/supabase";
 export const metadata = {
-  title: "Studio",
+  title: "Atelier",
   robots: { index: false, follow: false },
 };
 export default async function Page() {

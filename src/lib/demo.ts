@@ -7,16 +7,16 @@ export const demoContent: Content = {
   works: [
     {
       id: "00000000-0000-4000-8000-000000000001",
-      title: "Midnight wings",
+      title: "Nachtfalter",
       category: "tattoo",
       image: "/art/moth-skin.svg",
       description:
-        "Illustratives Demomotiv. Linework und feine Schraffuren auf einer stilisierten Hautfläche.",
+        "Illustratives Demomotiv. Feine Linien und Schraffuren auf einer stilisierten Hautfläche.",
       available: false,
     },
     {
       id: "00000000-0000-4000-8000-000000000002",
-      title: "Through the looking glass",
+      title: "Hinter dem Spiegel",
       category: "mirror",
       image: "/art/bloom-mirror.svg",
       description:
@@ -25,7 +25,7 @@ export const demoContent: Content = {
     },
     {
       id: "00000000-0000-4000-8000-000000000003",
-      title: "The serpent",
+      title: "Die Schlange",
       category: "motif",
       image: "/art/serpent-paper.svg",
       description:
@@ -34,7 +34,7 @@ export const demoContent: Content = {
     },
     {
       id: "00000000-0000-4000-8000-000000000004",
-      title: "Night garden",
+      title: "Nachtgarten",
       category: "tattoo",
       image: "/art/bloom-skin.svg",
       description: "Botanische Demostudie auf einer stilisierten Hautfläche.",
@@ -42,7 +42,7 @@ export const demoContent: Content = {
     },
     {
       id: "00000000-0000-4000-8000-000000000005",
-      title: "Lunar reflection",
+      title: "Mondspiegel",
       category: "mirror",
       image: "/art/moth-mirror.svg",
       description:
@@ -51,7 +51,7 @@ export const demoContent: Content = {
     },
     {
       id: "00000000-0000-4000-8000-000000000006",
-      title: "Wild bloom",
+      title: "Wilde Blüte",
       category: "motif",
       image: "/art/bloom-paper.svg",
       description: "Freies botanisches Demomotiv mit feinen Konturen.",

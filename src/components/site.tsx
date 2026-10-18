@@ -1,21 +1,14 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import {
-  ArrowUpRight,
-  ArrowDown,
-  X,
-  Menu,
-  MoveRight,
-  Check,
-  SlidersHorizontal,
-} from "lucide-react";
+import { ArrowUpRight, ArrowDown, X, MoveRight, Check } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { useStudio } from "./studio-provider";
 import { HeroScene } from "./hero-scene";
+import { LineSidebar } from "./line-sidebar";
+import { ReflectiveWork } from "./reflective-work";
 import type { Artwork } from "@/lib/schema";
 export function Header() {
-  const [open, setOpen] = useState(false);
   const { demo } = useStudio();
   return (
     <>
@@ -26,30 +19,23 @@ export function Header() {
         <Link href="/" className="brand" aria-label="ALURA Startseite">
           ALURA<span>IREZUMI</span>
         </Link>
-        <nav aria-label="Hauptnavigation" className={open ? "nav open" : "nav"}>
-          <Link href="/work" onClick={() => setOpen(false)}>
-            Arbeiten
+        <span className="header-caption">
+          TÄTOWIERUNGEN
+          <br />
+          SPIEGELGRAVUREN
+        </span>
+        <div className="header-actions">
+          <Link className="studio-link" href="/admin">
+            <span className="tiny-dot" />
+            {demo ? "Demo-Atelier" : "Atelier"}
           </Link>
-          <Link href="/#artist" onClick={() => setOpen(false)}>
-            Die Künstlerin
+          <Link className="header-contact" href="/contact">
+            Deine Idee
+            <ArrowUpRight size={16} />
           </Link>
-          <Link href="/contact" onClick={() => setOpen(false)}>
-            Anfragen <ArrowUpRight size={14} />
-          </Link>
-        </nav>
-        <Link className="studio-link" href="/admin">
-          <span className="tiny-dot" />
-          {demo ? "Demo Studio" : "Studio"}
-        </Link>
-        <button
-          className="mobile-menu icon-button"
-          aria-label={open ? "Menü schließen" : "Menü öffnen"}
-          aria-expanded={open}
-          onClick={() => setOpen(!open)}
-        >
-          {open ? <X /> : <Menu />}
-        </button>
+        </div>
       </header>
+      <LineSidebar />
     </>
   );
 }
@@ -59,10 +45,10 @@ export function Footer() {
       <Link href="/" className="brand">
         ALURA<span>IREZUMI</span>
       </Link>
-      <p>Tattoo art. Mirror art. Your story.</p>
+      <p>Deine Geschichte. Auf Haut und Glas.</p>
       <div>
         <Link href="/legal">Rechtliches</Link>
-        <Link href="/admin">Studio</Link>
+        <Link href="/admin">Atelier</Link>
         <a
           href="https://www.instagram.com/alura.irezumi/"
           target="_blank"
@@ -97,8 +83,6 @@ function Reveal({
 }
 export function Home() {
   const { content, demo } = useStudio();
-  const [surface, setSurface] = useState(content.scene.surface);
-  useEffect(() => setSurface(content.scene.surface), [content.scene.surface]);
   return (
     <>
       <Header />
@@ -106,12 +90,12 @@ export function Home() {
         <section className="hero">
           <div className="hero-copy">
             <div className="eyebrow">
-              <span className="tiny-line" /> TATTOO & MIRROR ART
+              <span className="tiny-line" /> TÄTOWIERUNGEN & SPIEGELGRAVUREN
             </div>
             <h1>
-              Under your skin.
+              Unter die Haut.
               <br />
-              <span>Beyond the glass.</span>
+              <span>Durch den Spiegel.</span>
             </h1>
             <p>
               Deine Geschichte. Meine Linien.
@@ -127,45 +111,30 @@ export function Home() {
               </Link>
             </div>
             <div className="hero-footnote">
-              <span>ANIME · FANTASY · LINEWORK</span>
-              <span>ONE ARTIST. TWO SURFACES.</span>
+              <span>ANIME · FANTASY · FEINE LINIEN</span>
+              <span>EINE KÜNSTLERIN. ZWEI OBERFLÄCHEN.</span>
             </div>
           </div>
           <div className="hero-visual">
-            <HeroScene scene={{ ...content.scene, surface }} />
-            <div className="material-control">
-              <span>GLASS</span>
-              <input
-                aria-label="Materialwechsel zwischen Glas und Haut"
-                type="range"
-                min="0"
-                max="100"
-                value={surface}
-                onChange={(e) => setSurface(+e.target.value)}
-              />
-              <span>INK</span>
-            </div>
-            <span className="interaction-hint">
-              Verschiebe die Grenze. Entdecke das Material.
-            </span>
+            <HeroScene scene={content.scene} interactive />
           </div>
           <a href="#selected" className="scroll-cue">
-            <ArrowDown size={16} /> SCROLL TO EXPLORE
+            <ArrowDown size={16} /> WEITER ENTDECKEN
           </a>
         </section>
         <div className="ticker" aria-hidden="true">
-          <span>INK ON SKIN</span>
+          <span>TINTE AUF HAUT</span>
           <i>+</i>
-          <span>LIGHT ON GLASS</span>
+          <span>LICHT AUF GLAS</span>
           <i>+</i>
-          <span>ART WITHOUT LIMITS</span>
+          <span>KUNST OHNE GRENZEN</span>
           <i>+</i>
           <span>ALURA IREZUMI</span>
         </div>
         <section id="selected" className="section selected">
           <Reveal className="section-heading">
             <div>
-              <p className="eyebrow">01 / SELECTED WORK</p>
+              <p className="eyebrow">一 / AUSGEWÄHLTE ARBEITEN</p>
               <h2>
                 Eine Idee.
                 <br />
@@ -185,8 +154,8 @@ export function Home() {
           </Reveal>
           {demo && (
             <p className="demo-disclosure">
-              DEMO COLLECTION / Illustrative Entwürfe. Keine Originalarbeiten
-              von Laura.
+              DEMOKOLLEKTION / Illustrative Entwürfe. Keine Originalarbeiten von
+              Laura.
             </p>
           )}
           <div className="selected-grid">
@@ -197,9 +166,9 @@ export function Home() {
             ))}
           </div>
         </section>
-        <section className="glass-section">
+        <section id="glass" className="glass-section">
           <Reveal>
-            <p className="eyebrow">02 / BEHIND THE GLASS</p>
+            <p className="eyebrow">二 / HINTER DEM GLAS</p>
             <h2>
               Manche Kunst
               <br />
@@ -214,26 +183,26 @@ export function Home() {
               Spiegel entdecken <ArrowUpRight size={18} />
             </Link>
           </Reveal>
-          <div className="glass-object">
+          <ReflectiveWork className="glass-object">
             <img
               src="/art/bloom-mirror.svg"
               alt="Illustrativer Entwurf eines floral gravierten Spiegels"
               loading="lazy"
             />
-            <span className="object-caption">REFLECTION STUDY / 002</span>
-          </div>
+            <span className="object-caption">GRAVURSTUDIE / 二</span>
+          </ReflectiveWork>
         </section>
         <section id="artist" className="section artist">
           <Reveal className="artist-art">
             <div className="artist-monogram">a.</div>
-            <span>THE HAND BEHIND THE LINES</span>
+            <span>DIE HAND HINTER DEN LINIEN</span>
             <div className="artist-stamp">
-              INK
-              <br />& GLASS
+              HAUT
+              <br />& GLAS
             </div>
           </Reveal>
           <Reveal className="artist-copy">
-            <p className="eyebrow">03 / THE ARTIST</p>
+            <p className="eyebrow">三 / DIE KÜNSTLERIN</p>
             <h2>
               Hey, ich bin
               <br />
@@ -250,8 +219,8 @@ export function Home() {
             </a>
           </Reveal>
         </section>
-        <section className="contact-banner">
-          <p className="eyebrow">LET'S MAKE IT PERSONAL</p>
+        <section id="booking" className="contact-banner">
+          <p className="eyebrow">DEINE IDEE WIRD PERSÖNLICH</p>
           <h2>
             Deine Idee.
             <br />
@@ -267,22 +236,32 @@ export function Home() {
   );
 }
 const categoryLabels = {
-  tattoo: "TATTOO ART",
-  mirror: "MIRROR ART",
-  motif: "FLASH DESIGN",
+  tattoo: "TÄTOWIERUNG",
+  mirror: "SPIEGELGRAVUR",
+  motif: "FREIES MOTIV",
 };
 export function WorkCard({ work }: { work: Artwork }) {
   const [open, setOpen] = useState(false);
   return (
     <>
       <button className="work-card" onClick={() => setOpen(true)}>
-        <div className="work-image">
-          <img src={work.image} alt={work.title} loading="lazy" />
-          <span className="work-open">
-            <ArrowUpRight size={20} />
-          </span>
-          {work.available && <span className="availability">ANFRAGBAR</span>}
-        </div>
+        {work.category === "mirror" ? (
+          <ReflectiveWork className="work-image">
+            <img src={work.image} alt={work.title} loading="lazy" />
+            <span className="work-open">
+              <ArrowUpRight size={20} />
+            </span>
+            {work.available && <span className="availability">ANFRAGBAR</span>}
+          </ReflectiveWork>
+        ) : (
+          <div className="work-image">
+            <img src={work.image} alt={work.title} loading="lazy" />
+            <span className="work-open">
+              <ArrowUpRight size={20} />
+            </span>
+            {work.available && <span className="availability">ANFRAGBAR</span>}
+          </div>
+        )}
         <div className="work-caption">
           <h3>{work.title}</h3>
           <span>{categoryLabels[work.category]}</span>
@@ -346,18 +325,18 @@ export function WorkGallery() {
     <>
       <Header />
       <main id="main" className="section gallery-page">
-        <p className="eyebrow">THE COLLECTION</p>
+        <p className="eyebrow">DIE KOLLEKTION</p>
         <h1>
-          Made of stories.
+          Geschichten,
           <br />
-          <em>Drawn in lines.</em>
+          <em>die bleiben.</em>
         </h1>
         <div className="filter-bar" aria-label="Arbeiten filtern">
           {[
             ["all", "Alle Arbeiten"],
             ["tattoo", "Tattoos"],
             ["mirror", "Spiegel"],
-            ["motif", "Flash Designs"],
+            ["motif", "Freie Motive"],
           ].map(([v, l]) => (
             <button
               key={v}
@@ -376,7 +355,7 @@ export function WorkGallery() {
         </div>
         {demo && (
           <p className="demo-disclosure">
-            Illustrative Demokollektion. Originalarbeiten werden im Studio
+            Illustrative Demokollektion. Originalarbeiten werden im Atelier
             hochgeladen.
           </p>
         )}
@@ -433,7 +412,7 @@ export function Contact() {
       <Header />
       <main id="main" className="section contact-page">
         <div>
-          <p className="eyebrow">LET'S CREATE SOMETHING</p>
+          <p className="eyebrow">VOM GEDANKEN ZUM MOTIV</p>
           <h1>
             Alles beginnt
             <br />
@@ -465,8 +444,8 @@ export function Contact() {
               <h2>{demo ? "Demo erfolgreich." : "Anfrage eingegangen."}</h2>
               <p>
                 {demo
-                  ? "Es wurden keine Daten übermittelt oder gespeichert."
-                  : "Deine Anfrage wurde gespeichert. Laura kann sie im Studio lesen."}
+                  ? "Deine Eingaben wurden geprüft, aber weder gespeichert noch an Laura versendet."
+                  : "Deine Anfrage wurde gespeichert. Laura kann sie im Atelier lesen."}
               </p>
               <button className="button outline" onClick={() => setSent(false)}>
                 Weitere Anfrage
