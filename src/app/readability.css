@@ -1,0 +1,573 @@
+/* Public text remains readable at every breakpoint. Small technical labels are omitted. */
+.public-site {
+  --header-height: 110px;
+  --rail: 175px;
+}
+.public-site .header {
+  height: var(--header-height);
+  padding-top: 18px;
+  padding-bottom: 18px;
+  gap: 25px;
+}
+.public-site .brand {
+  transform: none;
+  display: block;
+  width: 150px;
+  flex-shrink: 0;
+}
+.public-site .brand img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+.public-site .header-caption {
+  font:
+    12px/1.65 "DM Sans",
+    sans-serif;
+  letter-spacing: 0.08em;
+}
+.public-site .header-actions {
+  gap: 25px;
+}
+.public-site .header-contact,
+.public-site .studio-link {
+  font:
+    14px/1.5 "DM Sans",
+    sans-serif;
+  min-height: 44px;
+  align-items: center;
+}
+.public-site .hero {
+  min-height: calc(100svh - var(--header-height));
+  padding-bottom: 60px;
+}
+.public-site .eyebrow,
+.public-site .hero-copy .eyebrow {
+  font:
+    14px/1.5 "DM Sans",
+    sans-serif;
+  letter-spacing: 0.08em;
+}
+.public-site .hero-services {
+  font-size: 18px !important;
+  line-height: 1.6;
+}
+.public-site .text-link,
+.public-site .hero-actions .text-link {
+  font-size: 15px;
+  min-height: 44px;
+  gap: 12px;
+}
+.public-site .hero-actions {
+  gap: 20px;
+  margin-top: 24px;
+}
+.public-site .button {
+  font-size: 15px;
+  min-height: 48px;
+}
+.public-site .rail-caption,
+.public-site .rail-foot,
+.public-site .scroll-cue {
+  display: none;
+}
+.public-site .chapter-rail {
+  width: var(--rail);
+  padding-left: 22px;
+  padding-right: 12px;
+}
+.public-site .chapter-rail a {
+  font:
+    14px/1.5 "DM Sans",
+    sans-serif;
+  gap: 15px;
+  padding: 12px 0;
+  min-height: 49px;
+}
+.public-site .rail-kanji {
+  font-size: 22px;
+  min-width: 22px;
+}
+.public-site .hero-visual {
+  min-width: 0;
+}
+.public-site .scene {
+  height: clamp(430px, 59svh, 650px);
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+.glass-pane {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  transform: none;
+  background: none;
+  box-shadow: none;
+  clip-path: none;
+  border: 0;
+}
+.glass-pane-surface {
+  background: transparent;
+  overflow: visible;
+  box-shadow: none;
+}
+.glass-pane-surface::after {
+  display: none;
+}
+.surface-canvas,
+.skin-surface {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent),
+    linear-gradient(0deg, transparent, #000 9%, #000 91%, transparent);
+  mask-image:
+    linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent),
+    linear-gradient(0deg, transparent, #000 9%, #000 91%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+.surface-canvas {
+  opacity: calc(1 - var(--material, 0) * 0.01);
+}
+.skin-surface {
+  opacity: calc(var(--material, 0) * 0.01);
+  background: #bb9471;
+  overflow: hidden;
+}
+.skin-surface > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.glass-pane .hero-motif {
+  width: 74%;
+  height: 93%;
+  left: 13%;
+  top: 3.5%;
+  object-fit: contain;
+  filter: none;
+  animation: none;
+}
+.glass-pane .hero-motif.engraving {
+  filter: none;
+  opacity: calc(0.9 * (1 - var(--material, 0) * 0.01));
+}
+.ink-clip {
+  mix-blend-mode: normal;
+}
+.glass-pane .hero-motif.ink {
+  filter: none;
+}
+.surface-caustic {
+  display: none;
+}
+.scene-work-label {
+  display: none;
+}
+.scene-note {
+  position: static;
+  margin: 12px auto 8px;
+  max-width: 500px;
+  font:
+    14px/1.5 "DM Sans",
+    sans-serif;
+  letter-spacing: 0;
+  color: var(--muted);
+  text-align: center;
+}
+.material-gestures {
+  display: grid;
+  grid-template-columns: auto minmax(100px, 1fr) auto;
+  gap: 16px;
+  max-width: 500px;
+  width: 100%;
+  margin: 8px auto 0;
+}
+.material-gestures > p {
+  font:
+    14px/1.5 "DM Sans",
+    sans-serif;
+  color: var(--muted);
+}
+.material-gestures button {
+  font:
+    15px/1.5 "DM Sans",
+    sans-serif;
+  min-height: 44px;
+  padding: 8px 2px;
+}
+.public-site .hero-design-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  justify-content: center;
+  margin: 12px auto 0;
+  max-width: 100%;
+}
+.public-site .hero-design-picker button {
+  font:
+    14px/1.5 "DM Sans",
+    sans-serif;
+  min-height: 44px;
+  padding: 8px 3px;
+  min-width: 40px;
+}
+.public-site .section-heading > div > p:not(.eyebrow),
+.public-site .glass-section p:not(.eyebrow),
+.public-site .body-copy,
+.public-site .artist-copy .body-copy,
+.public-site .contact-banner > p:not(.eyebrow) {
+  font-size: 16px;
+  line-height: 1.8;
+}
+.public-site .work-caption > span,
+.public-site .availability,
+.public-site .object-caption,
+.public-site .mirror-preview .object-caption,
+.public-site .demo-disclosure,
+.public-site .artist-art > span {
+  font:
+    14px/1.6 "DM Sans",
+    sans-serif;
+  letter-spacing: 0.03em;
+}
+.public-site .work-image {
+  border: 0;
+  box-shadow: none;
+  background: #ede9f1;
+  padding: 18px 8px;
+  overflow: hidden;
+}
+.public-site .work-image::before,
+.public-site .reflective-edge {
+  display: none;
+}
+.public-site .work-image img {
+  object-fit: contain;
+  transform: none;
+}
+.public-site .work-open {
+  min-width: 38px;
+  min-height: 38px;
+  display: grid;
+  place-items: center;
+  border: 0;
+}
+.public-site .mirror-preview {
+  background: transparent;
+  box-shadow: none;
+  border: 0;
+  rotate: 0;
+  padding: 0;
+  height: 530px;
+  max-width: 340px;
+  width: 100%;
+}
+.public-site .mirror-preview::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, #1f1730, #77718a44 45%, #11283855);
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 15%,
+    #000 85%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 15%,
+    #000 85%,
+    transparent
+  );
+}
+.public-site .mirror-preview > img {
+  height: 94%;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  filter: none;
+  object-fit: contain;
+}
+.public-site .mirror-preview .object-caption {
+  font-size: 14px;
+  line-height: 1.5;
+  top: calc(100% + 5px);
+  color: var(--muted);
+}
+.public-site .contact-email,
+.public-site footer > p,
+.public-site footer > div,
+.public-site footer small {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.public-site .filter-bar button {
+  font-size: 15px;
+  min-height: 44px;
+}
+.public-site .filter-bar button span {
+  font-size: 14px;
+}
+.public-site label {
+  font-size: 15px;
+}
+.public-site .checkbox-label,
+.public-site .notice,
+.public-site .form-error {
+  font-size: 14px;
+  line-height: 1.7;
+}
+.public-site .segmented button {
+  font-size: 15px;
+  min-height: 44px;
+}
+.public-site .art-dialog p {
+  font-size: 16px;
+}
+.public-site .art-dialog .eyebrow {
+  font-size: 14px;
+}
+.compact .glass-pane {
+  height: 100%;
+  width: 100%;
+}
+.compact .scene-note {
+  font-size: 13px;
+}
+.admin-shell .scene-note {
+  font-size: 13px;
+  margin-top: 10px;
+}
+@media (max-width: 1150px) {
+  .public-site {
+    --rail: 155px;
+  }
+  .public-site .header-caption {
+    display: none;
+  }
+  .public-site .chapter-rail a {
+    gap: 12px;
+    font-size: 14px;
+  }
+  .public-site .hero-actions {
+    gap: 12px;
+  }
+  .public-site .hero-actions .text-link {
+    font-size: 14px;
+  }
+  .public-site .scene {
+    height: 500px;
+  }
+}
+@media (max-width: 850px) {
+  .public-site .hero {
+    padding-top: 25px;
+  }
+  .public-site .hero-visual {
+    margin-top: 25px;
+  }
+  .public-site .scene {
+    height: 470px;
+    max-width: 500px;
+    margin: auto;
+  }
+  .public-site .hero-design-picker {
+    gap: 8px 20px;
+  }
+  .public-site .hero-copy .eyebrow {
+    font-size: 14px;
+  }
+  .public-site .hero-services {
+    font-size: 17px !important;
+  }
+  .public-site .section-heading > div > p:not(.eyebrow) {
+    font-size: 16px;
+  }
+  .public-site .artist-copy .body-copy {
+    font-size: 15px;
+  }
+  .public-site .mirror-preview {
+    height: 500px;
+    max-width: 300px;
+  }
+  .public-site .hero-copy h1 {
+    font-size: clamp(53px, 8.9vw, 78px);
+  }
+}
+@media (max-width: 650px) {
+  .public-site {
+    --rail: 0px;
+    --header-height: 100px;
+  }
+  .public-site .header {
+    padding: 14px 5%;
+    gap: 14px;
+  }
+  .public-site .brand {
+    width: 135px;
+  }
+  .public-site .header-actions {
+    gap: 15px;
+  }
+  .public-site .studio-link {
+    font-size: 14px;
+  }
+  .public-site .header-contact {
+    display: none;
+  }
+  .public-site .chapter-rail {
+    width: 100%;
+    height: calc(78px + env(safe-area-inset-bottom));
+    padding: 0 5px env(safe-area-inset-bottom);
+  }
+  .public-site .chapter-rail a {
+    font-size: 12px;
+    gap: 4px;
+    min-height: 62px;
+    line-height: 1.4;
+    padding: 8px 3px;
+  }
+  .public-site .rail-kanji {
+    font-size: 23px;
+    min-width: 0;
+  }
+  .public-site .hero {
+    padding: 18px 6% 35px;
+    min-height: calc(100svh - 178px);
+  }
+  .public-site .hero-copy h1 {
+    font-size: 12vw;
+    letter-spacing: 0;
+  }
+  .public-site .hero-copy .eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.025em;
+  }
+  .public-site .hero-services {
+    font-size: 17px !important;
+  }
+  .public-site .hero-actions {
+    margin-top: 16px;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .public-site .hero-actions .text-link {
+    font-size: 14px;
+  }
+  .public-site .scene {
+    height: clamp(360px, 51svh, 460px);
+  }
+  .public-site .scene-note {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 12px;
+  }
+  .material-gestures {
+    gap: 10px;
+    grid-template-columns: auto minmax(90px, 1fr) auto;
+  }
+  .material-gestures > p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .material-gestures button {
+    font-size: 14px;
+    gap: 5px;
+  }
+  .public-site .hero-design-picker {
+    gap: 4px 12px;
+    margin-top: 10px;
+  }
+  .public-site .hero-design-picker button {
+    font-size: 14px;
+    min-height: 44px;
+  }
+  .public-site .eyebrow {
+    font-size: 13px;
+  }
+  .public-site .work-caption > span {
+    font-size: 13px;
+  }
+  .public-site .work-image {
+    padding: 14px 4px;
+  }
+  .public-site .mirror-preview {
+    height: 460px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .public-site .mirror-preview .object-caption {
+    font-size: 14px;
+  }
+  .public-site .contact-banner > p:not(.eyebrow) {
+    font-size: 16px;
+  }
+  .public-site footer {
+    gap: 25px 18px;
+  }
+  .public-site footer > p {
+    font-size: 14px;
+    text-align: left;
+  }
+  .public-site footer > div {
+    gap: 16px;
+  }
+  .public-site footer small {
+    font-size: 13px;
+    text-align: left;
+  }
+  .public-site footer .brand {
+    width: 135px;
+  }
+  .public-site .filter-bar {
+    gap: 15px;
+  }
+  .public-site .filter-bar button {
+    font-size: 14px;
+  }
+  .public-site .filter-bar button span {
+    font-size: 13px;
+  }
+  .public-site .artist-art > span {
+    font-size: 13px;
+  }
+  .public-site .demo-disclosure {
+    font-size: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .surface-canvas {
+    display: none;
+  }
+  .glass-pane-surface {
+    background: transparent;
+  }
+  .skin-surface {
+    opacity: calc(var(--material, 0) * 0.01);
+  }
+}
+
+/* Native transparent SVG layers: no color filters or blending on artwork. */
+.hero-motif,
+.ink-clip {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+.glass-pane-surface {
+  isolation: auto;
+}
+@media (max-width: 700px) {
+  body {
+    padding-bottom: calc(78px + env(safe-area-inset-bottom));
+  }
+}

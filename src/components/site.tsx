@@ -18,7 +18,12 @@ export function Header() {
       </a>
       <header className="header">
         <Link href="/" className="brand" aria-label="ALURA Startseite">
-          ALURA<span>IREZUMI</span>
+          <img
+            src="/brand/alura-wordmark.svg"
+            alt="ALURA IREZUMI"
+            width="180"
+            height="88"
+          />
         </Link>
         <span className="header-caption">
           TÄTOWIERUNGEN
@@ -44,7 +49,12 @@ export function Footer() {
   return (
     <footer>
       <Link href="/" className="brand">
-        ALURA<span>IREZUMI</span>
+        <img
+          src="/brand/alura-wordmark.svg"
+          alt="ALURA IREZUMI"
+          width="180"
+          height="88"
+        />
       </Link>
       <p>Tattoos & Spiegelgravuren · Bochum</p>
       <div>
@@ -94,7 +104,7 @@ export function Home() {
       motif === content.scene.motif ? content.scene.customImage : undefined,
   };
   return (
-    <>
+    <div className="public-site">
       <Header />
       <main id="main">
         <section className="hero">
@@ -179,7 +189,7 @@ export function Home() {
           </Reveal>
           <ReflectiveWork className="mirror-preview">
             <img
-              src={scene.customImage || motifs[motif].image}
+              src={scene.customImage || motifs[motif].engravingImage}
               alt={`${motifs[motif].name} als Gravurvorschau`}
               loading="lazy"
             />
@@ -230,7 +240,7 @@ export function Home() {
         </section>
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
 const categoryLabels = {
@@ -320,7 +330,7 @@ export function WorkGallery() {
     (w) => filter === "all" || w.category === filter,
   );
   return (
-    <>
+    <div className="public-site">
       <Header />
       <main id="main" className="section gallery-page">
         <p className="eyebrow">MOTIVE VON LAURA</p>
@@ -367,7 +377,7 @@ export function WorkGallery() {
         )}
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
 export function Contact() {
@@ -406,7 +416,7 @@ export function Contact() {
     }
   }
   return (
-    <>
+    <div className="public-site">
       <Header />
       <main id="main" className="section contact-page">
         <div>
@@ -550,6 +560,6 @@ export function Contact() {
         </div>
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

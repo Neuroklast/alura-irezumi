@@ -27,7 +27,7 @@ Demo-Inhalte und eigene Uploads können über `/admin` bearbeitet werden. „Spe
 
 Kontaktanfragen werden in der Demo validiert, aber **weder gespeichert noch versendet**. Bei gesperrtem oder vollem Browserspeicher erscheint ein Hinweis. Uploads sind in der Demo auf 2 MB pro Bild begrenzt. Für eine größere Sammlung kleinere Bilder verwenden.
 
-Die vier Standardmotive sind **Mew, Psiana, Knogga und Aquana** aus den vom Auftraggeber bereitgestellten ALURA-Posts. Es handelt sich um **Wannado-Entwürfe**, nicht um Fotos ausgeführter Tattoos. Sie wurden freigestellt und in echte SVG-Pfade mit separaten Kontur- und Graustufenebenen umgewandelt. Die Dateien enthalten keine eingebetteten Screenshots. Verfügbarkeit und freie Termine werden nicht aus alten Posts übernommen.
+Die vier Standardmotive sind **Mew, Psiana, Alola-Knogga und Aquana** aus den vom Auftraggeber bereitgestellten ALURA-Posts. Es handelt sich um **Wannado-Entwürfe**, nicht um Fotos ausgeführter Tattoos. Sie wurden freigestellt und in echte SVG-Pfade mit separaten Kontur- und Graustufenebenen umgewandelt. Die Dateien enthalten keine eingebetteten Screenshots. Verfügbarkeit und freie Termine werden nicht aus alten Posts übernommen.
 
 Das bereitgestellte Portrait von Laura ist als komprimiertes WebP eingebunden. Instagram-Bedienelemente, Kommentare und Nutzerbilder aus den Post-Screenshots werden nicht veröffentlicht. Die zuvor erstellten Beispielzeichnungen wurden aus dem Projekt entfernt. Bekannte alte Seed-Einträge werden beim Laden ersetzt, eigene Uploads und selbst geänderte Texte bleiben erhalten.
 
@@ -152,3 +152,11 @@ npm run build
 GitHub Actions führt dieselben Prüfungen bei Push und Pull Request aus. Versionen und Lockfile sind festgeschrieben. Schriften werden lokal ausgeliefert, es werden keine Google-Fonts- oder Instagram-Embeds geladen.
 
 Automatisierte Tests prüfen auch, dass die SVG-Motive echte Pfade ohne eingebettete Rasterbilder enthalten und die Migration alte Beispiele ersetzt, ohne eigene Inhalte zu verlieren. Weitere Tests decken Demofallback, Bildquellenvalidierung, Payloadgrenzen, Origin-Prüfung, Einwilligung, den Demo-Anfrageweg und die Gestenerkennung ab. Ein gerenderter HTML-Test prüft außerdem die deutschen Überschriften, die Kanji-Navigation und die Abwesenheit eines öffentlichen Range-Eingabefelds. Live-Anmeldung, R2-CORS und Datenbank-RLS müssen mit den tatsächlichen Accounts zusätzlich integriert geprüft werden. WebGL-Darstellung, Touch-Bedienung und responsive Layouts benötigen eine visuelle Prüfung auf echten Geräten. In dieser Entwicklungsumgebung stand kein Browser für visuelle QA zur Verfügung.
+
+### Transparenz und Bildrechte
+
+Die Motivdateien und ihre hellen Gravurvarianten bestehen aus SVG-Pfaden ohne Hintergrundfläche. Die Darstellung verwendet keine Farbfilter oder Mischmodi auf den Motiven. `scripts/clean_vectors.py` erzeugt beide Varianten mit identischem, eng beschnittenem ViewBox. Die Wortmarke unter `public/brand` enthält echte Vektorpfade; die Schriftlizenz liegt daneben.
+
+Die Hautvorschau nutzt eine echte Fotografie von Pixnio, gespiegelt auf [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Image_skin_texture.jpg), unter CC0, einschließlich kommerzieller Nutzung. Herkunft, Lizenz und Bearbeitung stehen in `public/art/licenses.json`. Es handelt sich um eine Materialvorschau, nicht um ein Foto eines ausgeführten Tattoos.
+
+Die deutschen Pokémon-Namen wurden anhand offizieller Pokémon-Seiten geprüft. Das Motiv mit brennendem Knochen ist Alola-Knogga: https://www.pokemon.com/de/pokemon-sammelkartenspiel/Produktgalerie/kollektion-alola-knogga-gx .

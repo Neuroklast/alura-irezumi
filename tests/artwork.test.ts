@@ -42,3 +42,39 @@ test("retiring old seed illustrations preserves uploaded work and authored biogr
     0,
   );
 });
+
+test("both ink and native engraving assets retain transparent unpainted space", () => {
+  for (const key of ["mew", "espeon", "marowak", "vaporeon"]) {
+    const variants = ["", "-engraving"].map((suffix) =>
+      readFileSync(
+        new URL(`../public/art/${key}${suffix}.svg`, import.meta.url),
+        "utf8",
+      ),
+    );
+    assert.equal(
+      variants[0].match(/viewBox="([^"]+)"/)?.[1],
+      variants[1].match(/viewBox="([^"]+)"/)?.[1],
+    );
+    for (const svg of variants) {
+      assert.equal(/<(?:rect|image|foreignObject|style)\b/.test(svg), false);
+      assert.equal(/background\s*[:=]/.test(svg), false);
+    }
+    assert.ok(variants[1].includes('fill="#e9efff"'));
+  }
+});
+test("skin photograph carries an explicit commercial-use license and branding uses vector outlines", () => {
+  const licenses = JSON.parse(
+    readFileSync(
+      new URL("../public/art/licenses.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  assert.equal(licenses["skin-cc0.webp"].license, "CC0-1.0");
+  assert.equal(licenses["skin-cc0.webp"].commercialUseAllowed, true);
+  const logo = readFileSync(
+    new URL("../public/brand/alura-wordmark.svg", import.meta.url),
+    "utf8",
+  );
+  assert.ok(logo.includes("<path"));
+  assert.equal(/<(?:image|text|rect)\b/.test(logo), false);
+});

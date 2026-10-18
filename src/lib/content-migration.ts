@@ -22,6 +22,10 @@ export function upgradeSeededContent(content: Content): Content {
           ...demoContent.works,
           ...content.works.filter((work) => !legacyImage(work.image)),
         ]
-      : content.works,
+      : content.works.map((work) =>
+          work.image === "/art/marowak.svg" && work.title === "Knogga"
+            ? { ...work, title: "Alola-Knogga" }
+            : work,
+        ),
   };
 }

@@ -10,6 +10,7 @@ import "@fontsource/barlow-condensed/600.css";
 import "@fontsource/barlow-condensed/700.css";
 import "lenis/dist/lenis.css";
 import "./globals.css";
+import "./readability.css";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import { getContent } from "@/lib/content";
 import { isDemo, integrationStatus } from "@/lib/config";

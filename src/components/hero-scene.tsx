@@ -142,10 +142,12 @@ export function HeroScene({
               speed={scene.speed}
               material={material}
             />
-            <div className="fallback-skin" />
+            <div className="skin-surface" aria-hidden="true">
+              <img src="/art/skin-cc0.webp" alt="" draggable={false} />
+            </div>
             <img
               className="hero-motif custom-motif engraving"
-              src={scene.customImage || motifs[scene.motif].image}
+              src={scene.customImage || motifs[scene.motif].engravingImage}
               alt=""
               draggable={false}
             />
@@ -162,12 +164,11 @@ export function HeroScene({
         </div>
         <span className="scene-work-label">
           {scene.customImage ? "Dein Motiv" : motifs[scene.motif].name}
-          <span>Entwurf von ALURA</span>
         </span>
-        <p className="scene-note">
-          Materialvorschau mit einem Wannado. Kein ausgeführtes Tattoo.
-        </p>
       </motion.div>
+      <p className="scene-note">
+        Motivvorschau auf Glas und echter Hautfotografie.
+      </p>
       {interactive && (
         <div className="material-gestures">
           <button onClick={() => target.set(0)}>

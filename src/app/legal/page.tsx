@@ -5,7 +5,7 @@ export const metadata = {
 };
 export default function Page() {
   return (
-    <>
+    <div className="public-site">
       <Header />
       <main id="main" className="section legal-page">
         <p className="eyebrow">VORLÄUFIGE DEMOVERSION</p>
@@ -39,6 +39,6 @@ export default function Page() {
         </p>
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

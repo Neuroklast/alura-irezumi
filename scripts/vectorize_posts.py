@@ -8,7 +8,7 @@ import numpy as np
 from PIL import Image,ImageOps,ImageDraw
 import cv2,vtracer,xml.etree.ElementTree as ET
 root=Path(__file__).resolve().parents[1]; source=Path(sys.argv[1]); tmp=Path('/tmp/alura-vector-qa');tmp.mkdir(exist_ok=True)
-items=[('mew','image(20261018-102613).png',(88,124,450,1021),'Mew'),('espeon','image(20261018-102613).png',(430,114,799,1045),'Psiana'),('marowak','Screenshot 2026-10-18 122536.png',(17,23,385,962),'Knogga'),('vaporeon','Screenshot 2026-10-18 122536.png',(416,78,839,1130),'Aquana')]
+items=[('mew','image(20261018-102613).png',(88,124,450,1021),'Mew'),('espeon','image(20261018-102613).png',(430,114,799,1045),'Psiana'),('marowak','Screenshot 2026-10-18 122536.png',(17,23,385,962),'Alola-Knogga'),('vaporeon','Screenshot 2026-10-18 122536.png',(416,78,839,1130),'Aquana')]
 ns='{http://www.w3.org/2000/svg}'
 manifest=[]
 for key,file,box,title in items:
@@ -59,3 +59,7 @@ for key,file,box,title in items:
 (root/'public/art/provenance.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
 # Original portrait, compressed for the site; remove the Instagram overlay at the bottom.
 im=Image.open(source/'image(20261018-102802).png').convert('RGB');im.crop((0,0,im.width,im.height-100)).save(root/'public/art/laura-atelier.webp',quality=88)
+
+# Recompute tightly fitted viewBoxes after tracing.
+from clean_vectors import clean
+for key, *_ in items:clean(root/"public/art"/f"{key}.svg")

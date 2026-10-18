@@ -1,0 +1,15 @@
+{
+  "skin-cc0.webp": {
+    "title": "Image skin texture",
+    "type": "photograph",
+    "sourcePage": "https://pixnio.com/textures-and-patterns/human-skin",
+    "sourceMirror": "https://commons.wikimedia.org/wiki/File:Image_skin_texture.jpg",
+    "originalFile": "https://upload.wikimedia.org/wikipedia/commons/7/75/Image_skin_texture.jpg",
+    "author": "Pixnio / PPD; Commons records the photographer as unknown",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "commercialUseAllowed": true,
+    "modifications": "Downscaled to 1600px and encoded as WebP. No generated image content.",
+    "verifiedOn": "2026-10-18"
+  }
+}

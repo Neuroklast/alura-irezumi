@@ -34,7 +34,7 @@ export const demoContent: Content = {
     },
     {
       id: "00000000-0000-4000-8000-000000000104",
-      title: "Knogga",
+      title: "Alola-Knogga",
       category: "motif",
       image: "/art/marowak.svg",
       description:

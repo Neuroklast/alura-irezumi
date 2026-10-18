@@ -31,7 +31,7 @@ test("the shipped examples are the four supplied Wannados, not invented tattoo p
   );
   assert.deepEqual(
     demoContent.works.map((w) => w.title),
-    ["Aquana", "Mew", "Psiana", "Knogga"],
+    ["Aquana", "Mew", "Psiana", "Alola-Knogga"],
   );
 });
 test("active and unsupported image sources are rejected, including SVG data URIs", () => {
