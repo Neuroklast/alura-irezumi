@@ -155,7 +155,7 @@ Automatisierte Tests prüfen auch, dass die SVG-Motive echte Pfade ohne eingebet
 
 ### Transparenz und Bildrechte
 
-Die Motivdateien enthalten ausschließlich schwarze Konturpfade ohne Hintergrundfläche und ohne graue Schattierung. Alola-Knogga und Aquana nutzen die vom Auftraggeber gelieferten Kontur-SVGs. Die Darstellung verwendet keine Farbfilter oder Mischmodi auf den Motiven. `scripts/clean_vectors.py` erzeugt beide Varianten mit identischem, eng beschnittenem ViewBox. Die Wortmarke unter `public/brand` enthält echte Vektorpfade; die Schriftlizenz liegt daneben.
+Die Tattoo-Motivdateien enthalten ausschließlich schwarze Konturpfade ohne Hintergrundfläche und ohne graue Schattierung. Die separate Spiegelvariante stellt dieselben Konturen hell als Gravur auf der dunklen reflektierenden Fläche dar. Alola-Knogga und Aquana nutzen die vom Auftraggeber gelieferten Kontur-SVGs. Die Darstellung verwendet keine Farbfilter oder Mischmodi auf den Motiven. `scripts/clean_vectors.py` erzeugt beide Varianten mit identischem, eng beschnittenem ViewBox. Die Wortmarke unter `public/brand` enthält echte Vektorpfade; die Schriftlizenz liegt daneben.
 
 Die Hautvorschau nutzt das vom Auftraggeber ausdrücklich ausgewählte zweite Bild `image(20261018-111319).png`. Die frühere Makroaufnahme wurde entfernt. Die Datei wird vollständig als WebP übernommen. Die Herkunft steht in `public/art/licenses.json`; eine unabhängige Stock-Lizenz wurde nicht mitgeliefert und wird nicht behauptet. Es handelt sich um eine Materialvorschau, nicht um ein Foto eines ausgeführten Tattoos.
 

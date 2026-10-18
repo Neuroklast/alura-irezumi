@@ -39,6 +39,10 @@ def clean(path):
             element.attrib.pop('fill-opacity',None)
             element.attrib.pop('opacity',None)
     tree.write(path,encoding='unicode')
+    # Mirror engraving is a material rendering of the same contours, not tattoo ink.
+    for element in root.iter():
+        if element.tag in ['{'+NS+'}path','{'+NS+'}g']:
+            element.set('fill','#e9efff')
     tree.write(path.with_name(path.stem+'-engraving.svg'),encoding='unicode')
     return list(bounds.bounds)
 

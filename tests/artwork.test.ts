@@ -59,13 +59,15 @@ test("both ink and native engraving assets retain transparent unpainted space", 
       assert.equal(/<(?:rect|image|foreignObject|style)\b/.test(svg), false);
       assert.equal(/background\s*[:=]/.test(svg), false);
     }
-    for (const svg of variants) {
+    for (const [index, svg] of variants.entries()) {
       assert.equal(svg.includes('data-layer="shade"'), false);
       const fills = [...svg.matchAll(/fill="([^"]+)"/g)].map(
         (match) => match[1],
       );
       assert.ok(fills.length > 0);
-      assert.ok(fills.every((fill) => fill === "#000000"));
+      assert.ok(
+        fills.every((fill) => fill === (index === 0 ? "#000000" : "#e9efff")),
+      );
       assert.equal(/(?:fill-opacity|opacity)=/.test(svg), false);
     }
   }
