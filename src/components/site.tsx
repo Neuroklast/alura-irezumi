@@ -1,7 +1,14 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, ArrowDown, X, MoveRight, Check } from "lucide-react";
+import {
+  ArrowUpRight,
+  ArrowDown,
+  X,
+  MoveRight,
+  Check,
+  ChevronDown,
+} from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { useStudio } from "./studio-provider";
 import { HeroScene } from "./hero-scene";
@@ -128,18 +135,28 @@ export function Home() {
             </div>
           </div>
           <div className="hero-visual">
-            <HeroScene scene={scene} interactive />
-            <div className="hero-design-picker" aria-label="Motiv auswählen">
-              {Object.entries(motifs).map(([key, entry]) => (
-                <button
-                  key={key}
-                  aria-pressed={motif === key}
-                  onClick={() => setMotif(key as MotifKey)}
-                >
-                  {entry.name}
-                </button>
-              ))}
-            </div>
+            <HeroScene
+              scene={scene}
+              interactive
+              motifPicker={
+                <div className="scene-motif-picker">
+                  <select
+                    aria-label="Motiv auswählen"
+                    value={motif}
+                    onChange={(event) =>
+                      setMotif(event.target.value as MotifKey)
+                    }
+                  >
+                    {Object.entries(motifs).map(([key, entry]) => (
+                      <option key={key} value={key}>
+                        {entry.name}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown size={15} aria-hidden="true" />
+                </div>
+              }
+            />
           </div>
           <Link href="#selected" scroll={!!reduced} className="scroll-cue">
             <ArrowDown size={15} />

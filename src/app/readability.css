@@ -677,3 +677,88 @@
     animation: none;
   }
 }
+
+/* One quiet control row; the material surface itself remains unchanged. */
+.scene-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  width: 100%;
+  max-width: 400px;
+  margin: 14px auto 0;
+  font:
+    14px/1.4 "DM Sans",
+    sans-serif;
+}
+.surface-choice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.surface-choice > svg {
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.surface-choice button {
+  min-height: 44px;
+  padding: 8px 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  white-space: nowrap;
+}
+.surface-choice button[aria-pressed="true"] {
+  color: var(--text);
+  border-bottom-color: var(--cyan);
+}
+.surface-choice button:hover {
+  color: var(--text);
+}
+.scene-motif-picker {
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-left: 1px solid var(--line);
+  padding-left: 20px;
+  min-width: 0;
+}
+.scene-motif-picker select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 136px;
+  min-height: 44px;
+  padding: 8px 23px 8px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+.scene-motif-picker option {
+  background: var(--bg);
+  color: var(--text);
+}
+.scene-motif-picker > svg {
+  position: absolute;
+  right: 0;
+  pointer-events: none;
+  color: var(--muted);
+}
+@media (max-width: 650px) {
+  .scene-toolbar {
+    gap: 16px;
+  }
+  .surface-choice {
+    gap: 10px;
+  }
+  .scene-motif-picker {
+    padding-left: 16px;
+  }
+  .scene-motif-picker select {
+    width: 124px;
+  }
+}
