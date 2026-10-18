@@ -8,7 +8,9 @@ import "@fontsource/manrope/700.css";
 import "@fontsource/barlow-condensed/500.css";
 import "@fontsource/barlow-condensed/600.css";
 import "@fontsource/barlow-condensed/700.css";
+import "lenis/dist/lenis.css";
 import "./globals.css";
+import { SmoothScroll } from "@/components/smooth-scroll";
 import { getContent } from "@/lib/content";
 import { isDemo, integrationStatus } from "@/lib/config";
 import { StudioProvider } from "@/components/studio-provider";
@@ -36,6 +38,7 @@ export default async function RootLayout({
           demo={isDemo()}
           integrations={integrationStatus()}
         >
+          <SmoothScroll />
           {children}
         </StudioProvider>
       </body>

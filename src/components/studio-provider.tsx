@@ -1,6 +1,7 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
 import { contentSchema, type Content } from "@/lib/schema";
+import { upgradeSeededContent } from "@/lib/content-migration";
 const key = "alura-demo-v1";
 type Studio = {
   content: Content;
@@ -35,28 +36,7 @@ export function StudioProvider({
         if (raw) {
           const parsed = contentSchema.safeParse(JSON.parse(raw));
           if (parsed.success) {
-            const oldTitles: Record<string, string> = {
-              "00000000-0000-4000-8000-000000000001": "Midnight wings",
-              "00000000-0000-4000-8000-000000000002":
-                "Through the looking glass",
-              "00000000-0000-4000-8000-000000000003": "The serpent",
-              "00000000-0000-4000-8000-000000000004": "Night garden",
-              "00000000-0000-4000-8000-000000000005": "Lunar reflection",
-              "00000000-0000-4000-8000-000000000006": "Wild bloom",
-            };
-            setContent({
-              ...parsed.data,
-              works: parsed.data.works.map((work) =>
-                work.title === oldTitles[work.id]
-                  ? {
-                      ...work,
-                      title:
-                        initial.works.find((w) => w.id === work.id)?.title ??
-                        work.title,
-                    }
-                  : work,
-              ),
-            });
+            setContent(upgradeSeededContent(parsed.data));
           }
         }
       } catch {

@@ -7,6 +7,7 @@ import { useStudio } from "./studio-provider";
 import { HeroScene } from "./hero-scene";
 import { LineSidebar } from "./line-sidebar";
 import { ReflectiveWork } from "./reflective-work";
+import { motifs, type MotifKey } from "@/lib/motifs";
 import type { Artwork } from "@/lib/schema";
 export function Header() {
   const { demo } = useStudio();
@@ -45,7 +46,7 @@ export function Footer() {
       <Link href="/" className="brand">
         ALURA<span>IREZUMI</span>
       </Link>
-      <p>Deine Geschichte. Auf Haut und Glas.</p>
+      <p>Tattoos & Spiegelgravuren · Bochum</p>
       <div>
         <Link href="/legal">Rechtliches</Link>
         <Link href="/admin">Atelier</Link>
@@ -82,84 +83,78 @@ function Reveal({
   );
 }
 export function Home() {
-  const { content, demo } = useStudio();
+  const { content } = useStudio();
+  const [motif, setMotif] = useState<MotifKey>(content.scene.motif);
+  useEffect(() => setMotif(content.scene.motif), [content.scene.motif]);
+  const scene = {
+    ...content.scene,
+    motif,
+    customImage:
+      motif === content.scene.motif ? content.scene.customImage : undefined,
+  };
   return (
     <>
       <Header />
       <main id="main">
         <section className="hero">
           <div className="hero-copy">
-            <div className="eyebrow">
-              <span className="tiny-line" /> TÄTOWIERUNGEN & SPIEGELGRAVUREN
-            </div>
+            <p className="eyebrow">LAURA / NEO TOKYO BOCHUM</p>
             <h1>
-              Unter die Haut.
+              ALURA
               <br />
-              <span>Durch den Spiegel.</span>
+              <span>IREZUMI</span>
             </h1>
-            <p>
-              Deine Geschichte. Meine Linien.
-              <br />
-              Kunst auf Haut und gravierten Spiegeln.
-            </p>
+            <p className="hero-services">Tattoos & Spiegelgravuren.</p>
             <div className="hero-actions">
-              <Link href="/work" className="button light">
-                Arbeiten entdecken <ArrowUpRight size={18} />
+              <Link href="/work" className="text-link">
+                Motive ansehen
+                <ArrowUpRight size={17} />
               </Link>
               <Link href="/contact" className="text-link">
-                Deine Idee <MoveRight size={18} />
+                Anfrage schicken
+                <ArrowUpRight size={17} />
               </Link>
-            </div>
-            <div className="hero-footnote">
-              <span>ANIME · FANTASY · FEINE LINIEN</span>
-              <span>EINE KÜNSTLERIN. ZWEI OBERFLÄCHEN.</span>
             </div>
           </div>
           <div className="hero-visual">
-            <HeroScene scene={content.scene} interactive />
+            <HeroScene scene={scene} interactive />
+            <div className="hero-design-picker" aria-label="Motiv auswählen">
+              {Object.entries(motifs).map(([key, entry]) => (
+                <button
+                  key={key}
+                  aria-pressed={motif === key}
+                  onClick={() => setMotif(key as MotifKey)}
+                >
+                  {entry.name}
+                </button>
+              ))}
+            </div>
           </div>
           <a href="#selected" className="scroll-cue">
-            <ArrowDown size={16} /> WEITER ENTDECKEN
+            <ArrowDown size={15} />
+            MOTIVE ANSEHEN
           </a>
         </section>
-        <div className="ticker" aria-hidden="true">
-          <span>TINTE AUF HAUT</span>
-          <i>+</i>
-          <span>LICHT AUF GLAS</span>
-          <i>+</i>
-          <span>KUNST OHNE GRENZEN</span>
-          <i>+</i>
-          <span>ALURA IREZUMI</span>
-        </div>
         <section id="selected" className="section selected">
           <Reveal className="section-heading">
             <div>
-              <p className="eyebrow">一 / AUSGEWÄHLTE ARBEITEN</p>
-              <h2>
-                Eine Idee.
-                <br />
-                <em>Viele Möglichkeiten.</em>
-              </h2>
+              <p className="eyebrow">一 / MOTIVE</p>
+              <h2>Wannados.</h2>
             </div>
             <div>
               <p>
-                Von der ersten Linie bis zum letzten Detail.
+                Ein paar meiner Entwürfe.
                 <br />
-                Entdecke die Welt zwischen Tinte und Reflexion.
+                Frag gern nach, ob dein Wunschmotiv noch frei ist.
               </p>
               <Link href="/work" className="text-link">
-                Alle Arbeiten <ArrowUpRight size={18} />
+                Alle Motive
+                <ArrowUpRight size={17} />
               </Link>
             </div>
           </Reveal>
-          {demo && (
-            <p className="demo-disclosure">
-              DEMOKOLLEKTION / Illustrative Entwürfe. Keine Originalarbeiten von
-              Laura.
-            </p>
-          )}
           <div className="selected-grid">
-            {content.works.slice(0, 3).map((work, i) => (
+            {content.works.slice(0, 4).map((work, i) => (
               <Reveal key={work.id} className={`selected-item item-${i}`}>
                 <WorkCard work={work} />
               </Reveal>
@@ -168,46 +163,42 @@ export function Home() {
         </section>
         <section id="glass" className="glass-section">
           <Reveal>
-            <p className="eyebrow">二 / HINTER DEM GLAS</p>
-            <h2>
-              Manche Kunst
-              <br />
-              verändert den <em>Blick.</em>
-            </h2>
+            <p className="eyebrow">二 / SPIEGEL</p>
+            <h2>Spiegelgravuren.</h2>
             <p>
-              Gravierte Linien fangen das Licht.
+              Du möchtest ein Motiv auf einem Spiegel?
               <br />
-              Der Spiegel wird zum Kunstwerk.
+              Schreib mir, was du dir vorstellst und wie groß der Spiegel werden
+              soll.
             </p>
-            <Link href="/work?filter=mirror" className="button outline">
-              Spiegel entdecken <ArrowUpRight size={18} />
+            <Link href="/contact?type=mirror" className="text-link">
+              Spiegel anfragen
+              <ArrowUpRight size={17} />
             </Link>
           </Reveal>
-          <ReflectiveWork className="glass-object">
+          <ReflectiveWork className="mirror-preview">
             <img
-              src="/art/bloom-mirror.svg"
-              alt="Illustrativer Entwurf eines floral gravierten Spiegels"
+              src={scene.customImage || motifs[motif].image}
+              alt={`${motifs[motif].name} als Gravurvorschau`}
               loading="lazy"
             />
-            <span className="object-caption">GRAVURSTUDIE / 二</span>
+            <span className="object-caption">
+              Vorschau · keine ausgeführte Gravur
+            </span>
           </ReflectiveWork>
         </section>
         <section id="artist" className="section artist">
           <Reveal className="artist-art">
-            <div className="artist-monogram">a.</div>
-            <span>DIE HAND HINTER DEN LINIEN</span>
-            <div className="artist-stamp">
-              HAUT
-              <br />& GLAS
-            </div>
+            <img
+              src="/art/laura-atelier.webp"
+              alt="Laura im NEO TOKYO Atelier in Bochum"
+              loading="lazy"
+            />
+            <span>LAURA / NEO TOKYO BOCHUM</span>
           </Reveal>
           <Reveal className="artist-copy">
-            <p className="eyebrow">三 / DIE KÜNSTLERIN</p>
-            <h2>
-              Hey, ich bin
-              <br />
-              <em>{content.artist}.</em>
-            </h2>
+            <p className="eyebrow">三 / LAURA</p>
+            <h2>Hi, ich bin Laura.</h2>
             <p className="body-copy">{content.bio}</p>
             <a
               href={content.instagram}
@@ -215,20 +206,26 @@ export function Home() {
               rel="noreferrer"
               className="text-link"
             >
-              Ein Blick ins Atelier <ArrowUpRight size={18} />
+              Mehr auf Instagram
+              <ArrowUpRight size={17} />
             </a>
           </Reveal>
         </section>
         <section id="booking" className="contact-banner">
-          <p className="eyebrow">DEINE IDEE WIRD PERSÖNLICH</p>
-          <h2>
-            Deine Idee.
+          <p className="eyebrow">四 / KONTAKT</p>
+          <h2>Du hast eine Idee?</h2>
+          <p>
+            Schick mir dein Wunschmotiv, die ungefähre Größe
             <br />
-            <em>Unsere nächste Linie.</em>
-          </h2>
+            und bei Tattoos auch die Körperstelle.
+          </p>
           <Link href="/contact" className="button light">
-            Erzähl mir davon <ArrowUpRight size={18} />
+            Anfrage schicken
+            <ArrowUpRight size={17} />
           </Link>
+          <a className="contact-email" href="mailto:alura.irezumi@gmail.com">
+            alura.irezumi@gmail.com
+          </a>
         </section>
       </main>
       <Footer />
@@ -238,7 +235,7 @@ export function Home() {
 const categoryLabels = {
   tattoo: "TÄTOWIERUNG",
   mirror: "SPIEGELGRAVUR",
-  motif: "FREIES MOTIV",
+  motif: "WANNADO",
 };
 export function WorkCard({ work }: { work: Artwork }) {
   const [open, setOpen] = useState(false);
@@ -325,38 +322,38 @@ export function WorkGallery() {
     <>
       <Header />
       <main id="main" className="section gallery-page">
-        <p className="eyebrow">DIE KOLLEKTION</p>
-        <h1>
-          Geschichten,
-          <br />
-          <em>die bleiben.</em>
-        </h1>
+        <p className="eyebrow">MOTIVE VON LAURA</p>
+        <h1>Wannados & Arbeiten.</h1>
         <div className="filter-bar" aria-label="Arbeiten filtern">
           {[
             ["all", "Alle Arbeiten"],
             ["tattoo", "Tattoos"],
             ["mirror", "Spiegel"],
-            ["motif", "Freie Motive"],
-          ].map(([v, l]) => (
-            <button
-              key={v}
-              aria-pressed={filter === v}
-              className={filter === v ? "active" : ""}
-              onClick={() => setFilter(v)}
-            >
-              {l}
-              <span>
-                {v === "all"
-                  ? content.works.length
-                  : content.works.filter((w) => w.category === v).length}
-              </span>
-            </button>
-          ))}
+            ["motif", "Wannados"],
+          ]
+            .filter(
+              ([v]) =>
+                v === "all" || content.works.some((w) => w.category === v),
+            )
+            .map(([v, l]) => (
+              <button
+                key={v}
+                aria-pressed={filter === v}
+                className={filter === v ? "active" : ""}
+                onClick={() => setFilter(v)}
+              >
+                {l}
+                <span>
+                  {v === "all"
+                    ? content.works.length
+                    : content.works.filter((w) => w.category === v).length}
+                </span>
+              </button>
+            ))}
         </div>
         {demo && (
           <p className="demo-disclosure">
-            Illustrative Demokollektion. Originalarbeiten werden im Atelier
-            hochgeladen.
+            Die Motive sind Entwürfe. Bitte frag nach, ob sie noch frei sind.
           </p>
         )}
         <div className="gallery-grid">
@@ -412,15 +409,12 @@ export function Contact() {
       <Header />
       <main id="main" className="section contact-page">
         <div>
-          <p className="eyebrow">VOM GEDANKEN ZUM MOTIV</p>
-          <h1>
-            Alles beginnt
-            <br />
-            mit <em>deiner Idee.</em>
-          </h1>
+          <p className="eyebrow">ANFRAGE</p>
+          <h1>Schreib mir.</h1>
           <p className="body-copy">
-            Tattoo oder Spiegelgravur? Erzähl mir, was du dir vorstellst. Die
-            Details finden wir gemeinsam heraus.
+            Schick mir dein Wunschmotiv, die ungefähre Größe und bei Tattoos
+            auch die Körperstelle. Wenn du Referenzbilder hast, schick sie mir
+            gern per Mail.
           </p>
           <a
             className="text-link"

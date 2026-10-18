@@ -10,7 +10,7 @@ import {
   type MotionStyle,
 } from "motion/react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { Motif } from "./motif";
+import { motifs } from "@/lib/motifs";
 import {
   clamp,
   gestureIntent,
@@ -76,9 +76,7 @@ export function HeroScene({
           } as MotionStyle
         }
         role={interactive ? "group" : undefined}
-        aria-label={
-          interactive ? "Materialstudie: Spiegel und Haut" : undefined
-        }
+        aria-label={interactive ? "Motivvorschau auf Glas und Haut" : undefined}
         aria-describedby={interactive ? hint : undefined}
         tabIndex={interactive ? 0 : undefined}
         onKeyDown={(e) => {
@@ -136,17 +134,8 @@ export function HeroScene({
       >
         <div className="orb orb-pink" />
         <div className="orb orb-cyan" />
-        <div className="scene-grid" aria-hidden="true" />
-        <div className="scene-coordinate">
-          ALURA / MATERIALSTUDIE{" "}
-          {scene.motif === "moth"
-            ? "一"
-            : scene.motif === "bloom"
-              ? "二"
-              : "三"}
-        </div>
-        <div className="mirror-frame">
-          <div className="mirror-inner">
+        <div className="glass-pane">
+          <div className="glass-pane-surface">
             <Canvas
               surface={scene.surface}
               glow={scene.glow}
@@ -154,54 +143,29 @@ export function HeroScene({
               material={material}
             />
             <div className="fallback-skin" />
-            {scene.customImage ? (
+            <img
+              className="hero-motif custom-motif engraving"
+              src={scene.customImage || motifs[scene.motif].image}
+              alt=""
+              draggable={false}
+            />
+            <div className="ink-clip">
               <img
-                className="hero-motif custom-motif engraving"
-                src={scene.customImage}
+                className="hero-motif custom-motif ink"
+                src={scene.customImage || motifs[scene.motif].image}
                 alt=""
                 draggable={false}
               />
-            ) : (
-              <Motif
-                key={scene.motif}
-                kind={scene.motif}
-                className="hero-motif engraving"
-                draw
-              />
-            )}
-            <div className="ink-clip">
-              {scene.customImage ? (
-                <img
-                  className="hero-motif custom-motif ink"
-                  src={scene.customImage}
-                  alt=""
-                  draggable={false}
-                />
-              ) : (
-                <Motif
-                  key={scene.motif}
-                  kind={scene.motif}
-                  className="hero-motif ink"
-                  draw
-                />
-              )}
             </div>
             <div className="surface-caustic" aria-hidden="true" />
-            <div className="surface-scan" aria-hidden="true" />
           </div>
-          <span className="frame-top">A</span>
-          <span className="frame-bottom">+</span>
         </div>
-        <div className="scene-label glass-label">
-          <span className="tiny-dot" />一 / GLAS<span>Linien im Licht.</span>
-        </div>
-        <div className="scene-label ink-label">
-          二 / HAUT
-          <span className="tiny-dot" />
-          <span>Linien, die bleiben.</span>
-        </div>
+        <span className="scene-work-label">
+          {scene.customImage ? "Dein Motiv" : motifs[scene.motif].name}
+          <span>Entwurf von ALURA</span>
+        </span>
         <p className="scene-note">
-          Illustrative Materialstudie · kein ausgeführtes Tattoo
+          Materialvorschau mit einem Wannado. Kein ausgeführtes Tattoo.
         </p>
       </motion.div>
       {interactive && (
@@ -211,7 +175,7 @@ export function HeroScene({
             Spiegel
           </button>
           <p id={hint}>
-            <span className="desktop-hint">Mit der Maus erkunden</span>
+            <span className="desktop-hint">Maus bewegen</span>
             <span className="touch-hint">Nach links oder rechts wischen</span>
             <span className="sr-only">
               . Alternativ Materialknöpfe oder Pfeiltasten verwenden. Pos1 zeigt

@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useStudio } from "./studio-provider";
 import { HeroScene } from "./hero-scene";
+import { motifs, type MotifKey } from "@/lib/motifs";
 import type { Artwork } from "@/lib/schema";
 type Enquiry = {
   id: string;
@@ -148,7 +149,7 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
             <span className="eyebrow">ALURA / DEIN ATELIER</span>
             <h1>
               {tab === "overview"
-                ? "Dein Atelier. Digital."
+                ? "Übersicht"
                 : tab === "hero"
                   ? "Startbild"
                   : tab === "works"
@@ -244,14 +245,10 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
                 </div>
                 <div className="panel setup-panel">
                   <p className="eyebrow">DEIN ATELIER</p>
-                  <h2>
-                    Alles beginnt
-                    <br />
-                    mit einer Linie.
-                  </h2>
+                  <h2>Deine Website.</h2>
                   <p>
-                    Pflege deine Arbeiten, ändere die Lichtstimmung und stelle
-                    dein Startbild zusammen.
+                    Hier kannst du Motive und Texte bearbeiten und dein
+                    Startbild einstellen.
                   </p>
                   <button
                     className="button outline"
@@ -288,7 +285,7 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
               </div>
               <div className="panel controls">
                 <p className="eyebrow">SZENENEINSTELLUNGEN</p>
-                <h2>Deine Inszenierung.</h2>
+                <h2>Materialvorschau</h2>
                 <label>
                   Motiv
                   <select
@@ -299,9 +296,7 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
                     }
                     onChange={(e) => {
                       const value = e.target.value;
-                      const builtIn = ["moth", "bloom", "serpent"].includes(
-                        value,
-                      );
+                      const builtIn = Object.keys(motifs).includes(value);
                       update({
                         ...content,
                         scene: {
@@ -316,9 +311,11 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
                       });
                     }}
                   >
-                    <option value="moth">Nachtfalter</option>
-                    <option value="bloom">Wilde Blüte</option>
-                    <option value="serpent">Die Schlange</option>
+                    {Object.entries(motifs).map(([key, motif]) => (
+                      <option key={key} value={key}>
+                        {motif.name}
+                      </option>
+                    ))}
                     {content.works
                       .filter(
                         (w) =>
@@ -333,10 +330,10 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
                   </select>
                 </label>
                 <p className="muted">
-                  Vektormotive werden entlang der Kontur gezeichnet. Eigene
-                  Motive kannst du unter „Arbeiten & Motive“ als transparentes
-                  PNG hochladen und hier auswählen. Rastermotive erscheinen per
-                  Maskenanimation.
+                  Vektormotive stammen aus den bereitgestellten Wannado-Posts.
+                  Eigene Motive kannst du unter „Arbeiten & Motive“ als
+                  transparentes PNG hochladen und hier auswählen. Rastermotive
+                  erscheinen per Maskenanimation.
                 </p>
                 {[
                   {
@@ -400,7 +397,7 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
                       id: crypto.randomUUID(),
                       title: "",
                       category: "motif",
-                      image: "/art/moth-paper.svg",
+                      image: "/art/mew.svg",
                       description: "",
                       available: true,
                     });
@@ -478,7 +475,7 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
           )}
           {tab === "settings" && (
             <div className="panel settings-form">
-              <h2>Die Person hinter der Kunst.</h2>
+              <h2>Über dich.</h2>
               <label>
                 Name
                 <input

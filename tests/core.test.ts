@@ -24,10 +24,15 @@ function req(body: unknown, origin = "https://alura.example") {
     body: JSON.stringify(body),
   });
 }
-test("the shipped demo is valid and has both artwork materials", () => {
-  assert.equal(contentSchema.parse(demoContent).works.length, 6);
-  assert.ok(demoContent.works.some((w) => w.category === "tattoo"));
-  assert.ok(demoContent.works.some((w) => w.category === "mirror"));
+test("the shipped examples are the four supplied Wannados, not invented tattoo photos", () => {
+  assert.equal(contentSchema.parse(demoContent).works.length, 4);
+  assert.ok(
+    demoContent.works.every((w) => w.category === "motif" && !w.available),
+  );
+  assert.deepEqual(
+    demoContent.works.map((w) => w.title),
+    ["Aquana", "Mew", "Psiana", "Knogga"],
+  );
 });
 test("active and unsupported image sources are rejected, including SVG data URIs", () => {
   for (const image of [

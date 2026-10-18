@@ -16,8 +16,18 @@ test("the public home exposes German chapters and direct material interaction wi
       children: createElement(Home),
     }),
   );
-  assert.ok(html.includes("Unter die Haut."));
-  assert.ok(html.includes("Durch den Spiegel."));
+  assert.ok(html.includes("ALURA"));
+  assert.ok(html.includes("Tattoos &amp; Spiegelgravuren."));
+  assert.ok(html.includes("/art/vaporeon.svg"));
+  assert.ok(html.includes("/art/laura-atelier.webp"));
+  assert.equal(html.includes("mirror-frame"), false);
+  for (const phrase of [
+    "Deine Geschichte. Meine Linien.",
+    "Kunst ohne Grenzen",
+    "Unsere nächste Linie",
+    "Viele Möglichkeiten.",
+  ])
+    assert.equal(html.includes(phrase), false);
   assert.ok(html.includes("Seitennavigation"));
   for (const kanji of ["一", "二", "三", "四", "五"])
     assert.ok(html.includes(kanji));

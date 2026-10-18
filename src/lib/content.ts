@@ -1,4 +1,5 @@
 import "server-only";
+import { upgradeSeededContent } from "./content-migration";
 import { demoContent } from "./demo";
 import { contentSchema } from "./schema";
 import { isDemo } from "./config";
@@ -16,7 +17,7 @@ export async function getContent() {
       "Inhalte konnten nicht geladen werden. Bitte Supabase-Migration und öffentliche Leserechte prüfen.",
     );
   return {
-    content: contentSchema.parse(data.content),
+    content: upgradeSeededContent(contentSchema.parse(data.content)),
     version: data.version as number,
   };
 }

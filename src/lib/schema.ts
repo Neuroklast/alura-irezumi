@@ -18,7 +18,17 @@ export const artworkSchema = z.object({
   available: z.boolean(),
 });
 export const sceneSchema = z.object({
-  motif: z.enum(["moth", "bloom", "serpent"]),
+  motif: z
+    .enum(["mew", "espeon", "marowak", "vaporeon", "moth", "bloom", "serpent"])
+    .transform((value) =>
+      value === "moth"
+        ? "mew"
+        : value === "bloom"
+          ? "espeon"
+          : value === "serpent"
+            ? "vaporeon"
+            : value,
+    ),
   surface: z.number().min(0).max(100),
   speed: z.number().min(0.5).max(2),
   glow: z.number().min(0).max(1),
