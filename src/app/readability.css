@@ -678,87 +678,61 @@
   }
 }
 
-/* One quiet control row; the material surface itself remains unchanged. */
+/* Quiet gesture hint and gallery dots; no material buttons or dropdown. */
 .scene-toolbar {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 22px;
+  gap: 24px;
+  margin: 12px auto 0;
   width: 100%;
-  max-width: 400px;
-  margin: 14px auto 0;
+}
+.scene-swipe-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
   font:
     14px/1.4 "DM Sans",
     sans-serif;
 }
-.surface-choice {
+.scene-motif-dots {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 0;
 }
-.surface-choice > svg {
-  color: var(--muted);
-  flex-shrink: 0;
-}
-.surface-choice button {
+.scene-motif-dots button {
+  display: grid;
+  place-items: center;
+  width: 32px;
   min-height: 44px;
-  padding: 8px 0;
+  padding: 0;
   border: 0;
-  border-bottom: 1px solid transparent;
   background: transparent;
-  color: var(--muted);
-  font: inherit;
-  white-space: nowrap;
-}
-.surface-choice button[aria-pressed="true"] {
-  color: var(--text);
-  border-bottom-color: var(--cyan);
-}
-.surface-choice button:hover {
-  color: var(--text);
-}
-.scene-motif-picker {
-  display: flex;
-  align-items: center;
-  position: relative;
-  border-left: 1px solid var(--line);
-  padding-left: 20px;
-  min-width: 0;
-}
-.scene-motif-picker select {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 136px;
-  min-height: 44px;
-  padding: 8px 23px 8px 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  color: var(--text);
-  font: inherit;
   cursor: pointer;
 }
-.scene-motif-picker option {
-  background: var(--bg);
-  color: var(--text);
+.scene-motif-dots button > span {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--muted);
+  opacity: 0.4;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    background-color 0.2s ease;
 }
-.scene-motif-picker > svg {
-  position: absolute;
-  right: 0;
-  pointer-events: none;
-  color: var(--muted);
+.scene-motif-dots button[aria-pressed="true"] > span {
+  background: var(--pink);
+  opacity: 1;
+  transform: scale(1.3);
 }
-@media (max-width: 650px) {
-  .scene-toolbar {
-    gap: 16px;
-  }
-  .surface-choice {
-    gap: 10px;
-  }
-  .scene-motif-picker {
-    padding-left: 16px;
-  }
-  .scene-motif-picker select {
-    width: 124px;
+.scene-motif-dots button:hover > span {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .scene-motif-dots button > span {
+    transition: none;
   }
 }

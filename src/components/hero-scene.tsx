@@ -1,10 +1,9 @@
 "use client";
 import dynamic from "next/dynamic";
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, type ReactNode } from "react";
 import {
   motion,
   useMotionValue,
-  useMotionValueEvent,
   useSpring,
   useReducedMotion,
   useMotionTemplate,
@@ -45,15 +44,6 @@ export function HeroScene({
   const target = useMotionValue(scene.surface);
   const smooth = useSpring(target, { stiffness: 150, damping: 30, mass: 0.65 });
   const material = reduced ? target : smooth;
-  const [skinActive, setSkinActive] = useState(scene.surface >= 50);
-  const activeRef = useRef(skinActive);
-  useMotionValueEvent(material, "change", (value) => {
-    const next = value >= 50;
-    if (next !== activeRef.current) {
-      activeRef.current = next;
-      setSkinActive(next);
-    }
-  });
   const px = useMotionValue(50),
     py = useMotionValue(50);
   const pointerX = useMotionTemplate`${px}%`,
@@ -180,28 +170,15 @@ export function HeroScene({
       </motion.div>
       <p id={hint} className="sr-only">
         Materialvorschau, kein ausgeführtes Tattoo. Nach links oder rechts
-        wischen. Alternativ Materialknöpfe oder Pfeiltasten verwenden. Pos1
-        zeigt Glas, Ende zeigt Haut.
+        wischen. Alternativ Pfeiltasten verwenden. Pos1 zeigt Glas, Ende zeigt
+        Haut.
       </p>
       {interactive && (
         <div className="scene-toolbar">
-          <div className="surface-choice" role="group" aria-label="Material">
-            <button
-              type="button"
-              aria-pressed={!skinActive}
-              onClick={() => target.set(0)}
-            >
-              Spiegel
-            </button>
-            <ArrowLeftRight size={16} aria-hidden="true" />
-            <button
-              type="button"
-              aria-pressed={skinActive}
-              onClick={() => target.set(100)}
-            >
-              Haut
-            </button>
-          </div>
+          <span className="scene-swipe-hint" aria-hidden="true">
+            <ArrowLeftRight size={15} />
+            Swipe
+          </span>
           {motifPicker}
         </div>
       )}

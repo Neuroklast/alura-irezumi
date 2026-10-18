@@ -1,14 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import {
-  ArrowUpRight,
-  ArrowDown,
-  X,
-  MoveRight,
-  Check,
-  ChevronDown,
-} from "lucide-react";
+import { ArrowUpRight, ArrowDown, X, MoveRight, Check } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { useStudio } from "./studio-provider";
 import { HeroScene } from "./hero-scene";
@@ -139,21 +132,23 @@ export function Home() {
               scene={scene}
               interactive
               motifPicker={
-                <div className="scene-motif-picker">
-                  <select
-                    aria-label="Motiv auswählen"
-                    value={motif}
-                    onChange={(event) =>
-                      setMotif(event.target.value as MotifKey)
-                    }
-                  >
-                    {Object.entries(motifs).map(([key, entry]) => (
-                      <option key={key} value={key}>
-                        {entry.name}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown size={15} aria-hidden="true" />
+                <div
+                  className="scene-motif-dots"
+                  role="group"
+                  aria-label="Motiv auswählen"
+                >
+                  {Object.entries(motifs).map(([key, entry]) => (
+                    <button
+                      type="button"
+                      key={key}
+                      aria-label={entry.name}
+                      aria-pressed={motif === key}
+                      title={entry.name}
+                      onClick={() => setMotif(key as MotifKey)}
+                    >
+                      <span aria-hidden="true" />
+                    </button>
+                  ))}
                 </div>
               }
             />

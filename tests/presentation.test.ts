@@ -32,7 +32,7 @@ test("the public home exposes German chapters and direct material interaction wi
   for (const kanji of ["一", "二", "三", "四", "五"])
     assert.ok(html.includes(kanji));
   assert.ok(html.includes("Nach links oder rechts wischen"));
-  assert.ok(html.includes("Materialknöpfe oder Pfeiltasten"));
+  assert.ok(html.includes("Alternativ Pfeiltasten"));
   assert.equal(html.includes('type="range"'), false);
   assert.equal(html.includes("Under your skin"), false);
 });
