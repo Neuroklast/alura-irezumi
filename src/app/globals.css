@@ -27,6 +27,11 @@ body {
   font-size: 15px;
   line-height: 1.65;
 }
+/* Native dialogs otherwise use the browser's CanvasText color instead of body text. */
+dialog {
+  color: var(--text);
+  color-scheme: dark;
+}
 button,
 input,
 select,
@@ -1651,7 +1656,8 @@ dialog.edit-panel {
   color: var(--text);
   margin: auto;
 }
-dialog.edit-panel::backdrop {
+dialog.edit-panel::backdrop,
+dialog.shop-order-editor::backdrop {
   background: #08060be8;
   backdrop-filter: blur(8px);
 }
