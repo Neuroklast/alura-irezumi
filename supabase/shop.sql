@@ -108,7 +108,7 @@ begin
     select value into item from jsonb_array_elements(p_items) where value->>'variantId'=original->>'variantId';
     if item is null or item->>'status' not in ('blocked','ready','processing','shipped','cancelled') or length(coalesce(item->>'tracking',''))>120 then raise exception 'Ungültige Position'; end if;
     if item->>'fulfillment' not in ('unassigned','manual','pod') then raise exception 'Ungültige Versandart'; end if;
-    if (o.payment <> 'paid' or item->>'fulfillment' <> 'manual') and item->>'status' in ('ready','processing','shipped') then raise exception 'Versand ist noch nicht freigegeben'; end if;
+    if (o.payment not in ('paid','partially_refunded') or item->>'fulfillment' <> 'manual') and item->>'status' in ('ready','processing','shipped') and (item->>'status' <> original->>'status' or item->>'fulfillment' <> original->>'fulfillment') then raise exception 'Versand ist noch nicht freigegeben'; end if;
     result := result || jsonb_build_array(original || jsonb_build_object('status',item->>'status','tracking',coalesce(item->>'tracking',''),'fulfillment',item->>'fulfillment'));
   end loop;
   update public.shop_orders set items=result,return_status=p_return,note=p_note,version=version+1 where id=p_id returning * into o;

@@ -41,8 +41,20 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
     [editing, setEditing] = useState<Artwork | null>(null),
     [dirty, setDirty] = useState(false);
   useEffect(() => {
-    if (new URLSearchParams(window.location.search).get("tab") === "orders")
-      setTab("orders");
+    const initialTab = new URLSearchParams(window.location.search).get("tab");
+    if (
+      initialTab &&
+      [
+        "overview",
+        "hero",
+        "works",
+        "enquiries",
+        "prints",
+        "orders",
+        "settings",
+      ].includes(initialTab)
+    )
+      setTab(initialTab);
   }, []);
   useEffect(() => {
     if (!dirty) return;
@@ -52,6 +64,14 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
     window.addEventListener("beforeunload", warn);
     return () => window.removeEventListener("beforeunload", warn);
   }, [dirty]);
+  function selectTab(value: string) {
+    setTab(value);
+    window.history.replaceState(
+      null,
+      "",
+      value === "overview" ? "/admin" : `/admin?tab=${value}`,
+    );
+  }
   function update(next: typeof content) {
     setContent(next);
     setDirty(true);
@@ -121,7 +141,7 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
             <button
               key={id}
               className={tab === id ? "active" : ""}
-              onClick={() => setTab(id)}
+              onClick={() => selectTab(id)}
             >
               <Icon size={18} />
               {label}
@@ -247,14 +267,14 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
                   <small>Motive zum Anfragen</small>
                 </div>
               </div>
-              <ShopOrderOverview onOpen={() => setTab("orders")} />
+              <ShopOrderOverview onOpen={() => selectTab("orders")} />
               <div className="admin-overview-grid">
                 <div className="panel">
                   <div className="panel-heading">
                     <h2>Deine aktuelle Szene</h2>
                     <button
                       className="text-link"
-                      onClick={() => setTab("hero")}
+                      onClick={() => selectTab("hero")}
                     >
                       Bearbeiten <ArrowUpRight size={15} />
                     </button>
@@ -270,7 +290,7 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
                   </p>
                   <button
                     className="button outline"
-                    onClick={() => setTab("works")}
+                    onClick={() => selectTab("works")}
                   >
                     Arbeit hinzufügen <Plus size={16} />
                   </button>

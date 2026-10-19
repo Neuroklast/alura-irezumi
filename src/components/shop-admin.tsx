@@ -447,6 +447,7 @@ export function ShopOrders() {
   const [page, setPage] = useState(0),
     [total, setTotal] = useState(0),
     [revision, setRevision] = useState(0);
+  const [feedback, setFeedback] = useState("");
   const [error, setError] = useState(""),
     [loading, setLoading] = useState(!demo),
     [saving, setSaving] = useState(false),
@@ -491,18 +492,38 @@ export function ShopOrders() {
         pending: source.filter((o) => o.payment === "pending").length,
         sales: paid.reduce((n, o) => n + o.total, 0),
         sold: paid.flatMap((o) => o.items).reduce((n, i) => n + i.quantity, 0),
-        popular: [],
+        popular: Object.entries(
+          paid
+            .flatMap((o) => o.items)
+            .reduce<Record<string, number>>((totals, item) => {
+              totals[item.title] = (totals[item.title] || 0) + item.quantity;
+              return totals;
+            }, {}),
+        )
+          .map(([title, quantity]) => ({ title, quantity }))
+          .sort((a, b) => b.quantity - a.quantity)
+          .slice(0, 5),
       }
     : summary;
   async function saveOrder(order: Order) {
     setSaving(true);
     setError("");
+    setFeedback("");
     try {
       if (
         order.items.some(
           (i) =>
             ["ready", "processing", "shipped"].includes(i.status) &&
-            (order.payment !== "paid" || i.fulfillment !== "manual"),
+            (!["paid", "partially_refunded"].includes(order.payment) ||
+              i.fulfillment !== "manual") &&
+            source
+              .find((o) => o.id === order.id)
+              ?.items.some(
+                (original) =>
+                  original.variantId === i.variantId &&
+                  (original.status !== i.status ||
+                    original.fulfillment !== i.fulfillment),
+              ),
         )
       )
         throw new Error(
@@ -524,6 +545,7 @@ export function ShopOrders() {
         );
       }
       setSelected(null);
+      setFeedback("Bestellung gespeichert.");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Speichern fehlgeschlagen.");
     } finally {
@@ -579,7 +601,7 @@ export function ShopOrders() {
         <h2>Benachrichtigungen</h2>
         <p>
           {demo
-            ? `${source.length} Demobestellungen angelegt. E-Mails werden in der Demo nicht versendet.`
+            ? `${source.length} ${source.length === 1 ? "Demobestellung" : "Demobestellungen"} angelegt. E-Mails werden in der Demo nicht versendet.`
             : mail
               ? `${notices.length} Benachrichtigungen noch nicht als versendet bestätigt.`
               : "E-Mail-Versand noch nicht angeschlossen. Neue Bestellungen bleiben hier sichtbar."}
@@ -604,13 +626,20 @@ export function ShopOrders() {
                 setError("Versand konnte nicht gestartet werden.");
                 return;
               }
-              setError("Mailversand gestartet. Zum Prüfen gleich neu laden.");
+              setFeedback(
+                "Mailversand gestartet. Zum Prüfen gleich neu laden.",
+              );
             }}
           >
             E-Mail-Versand erneut anstoßen
           </button>
         )}
       </div>
+      {feedback && (
+        <p className="shop-notice" role="status">
+          {feedback}
+        </p>
+      )}
       {local.storageNotice && demo && (
         <p role="status">{local.storageNotice}</p>
       )}
@@ -647,6 +676,14 @@ export function ShopOrders() {
                 <span>
                   {new Date(order.created_at).toLocaleDateString("de-DE")} ·{" "}
                   {order.customer || "Checkout offen"}
+                </span>
+                <span>
+                  {[
+                    ...new Set(
+                      order.items.map((i) => itemStatusLabels[i.status]),
+                    ),
+                  ].join(" · ")}
+                  {order.return_status !== "none" ? " · Retoure" : ""}
                 </span>
               </span>
               <span>
@@ -831,7 +868,11 @@ function OrderEditor({
                     value={key}
                     disabled={
                       ["ready", "processing", "shipped"].includes(key) &&
-                      (order.payment !== "paid" || i.fulfillment !== "manual")
+                      (!["paid", "partially_refunded"].includes(
+                        order.payment,
+                      ) ||
+                        i.fulfillment !== "manual") &&
+                      key !== i.status
                     }
                   >
                     {label}
@@ -937,7 +978,7 @@ export function ShopOrderOverview({ onOpen }: { onOpen: () => void }) {
           <p>
             {error ||
               (demo
-                ? `${orders.length} Demobestellungen in diesem Browser.`
+                ? `${orders.length} ${orders.length === 1 ? "Demobestellung" : "Demobestellungen"} in diesem Browser.`
                 : count === null
                   ? "Bestellungen werden geladen…"
                   : `${count} Bestellungen im Shop.`)}

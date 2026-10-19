@@ -72,9 +72,12 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
     }
   }
   function quantity(variantId: string, value: number) {
-    const next = cart.filter((i) => i.variantId !== variantId);
-    if (value > 0)
-      next.push({ variantId, quantity: Math.min(10, Math.floor(value)) });
+    const count = Math.min(10, Math.max(0, Math.floor(value)));
+    const exists = cart.some((i) => i.variantId === variantId);
+    const next = cart
+      .map((i) => (i.variantId === variantId ? { ...i, quantity: count } : i))
+      .filter((i) => i.quantity > 0);
+    if (!exists && count > 0) next.push({ variantId, quantity: count });
     if (next.length > 20)
       throw new Error("Maximal 20 verschiedene Varianten pro Bestellung.");
     storeCart(next);

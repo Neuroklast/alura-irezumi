@@ -222,6 +222,55 @@ test("real PostgreSQL shop transactions enforce stock, RLS, payment ordering, re
         assert.equal(orderNow.items[0].status, "cancelled");
       },
     );
+    await t.test(
+      "returns on already shipped, fully refunded orders remain editable",
+      async () => {
+        const secondQuote = quoteCart(
+          content,
+          [{ variantId: content.shop.products[0].variants[1].id, quantity: 1 }],
+          true,
+        );
+        await db.exec("set role service_role");
+        const r = await db.query<{ o: Order }>(
+          "select public.reserve_print_order($1,$2,$3,$4,0) o",
+          [
+            "30000000-0000-4000-8000-000000000009",
+            secondQuote.items,
+            secondQuote.shipping,
+            secondQuote.total,
+          ],
+        );
+        const second = r.rows[0].o;
+        await db.query(
+          "select public.apply_print_event('evt_paid_second',$1,'cs_second','paid',$2,'Demo','demo@example.invalid','','pi_second')",
+          [second.id, second.total],
+        );
+        await db.exec("set role authenticated");
+        const shipped = second.items.map((i) => ({ ...i, status: "shipped" }));
+        await db.query("select public.update_print_order($1,1,$2,'none','')", [
+          second.id,
+          shipped,
+        ]);
+        await db.exec("set role service_role");
+        await db.query(
+          "select public.apply_print_refund('evt_refund_second','pi_second',$1)",
+          [second.total],
+        );
+        await db.exec("set role authenticated");
+        const returned = await db.query<{ o: Order }>(
+          "select public.update_print_order($1,3,$2,'received','Returned safely') o",
+          [second.id, shipped],
+        );
+        assert.equal(returned.rows[0].o.payment, "refunded");
+        assert.equal(returned.rows[0].o.items[0].status, "shipped");
+        assert.equal(returned.rows[0].o.return_status, "received");
+        await db.exec("set role service_role");
+        await assert.rejects(
+          () => reserve("30000000-0000-4000-8000-000000000010"),
+          /ausverkauft/,
+        );
+      },
+    );
   } finally {
     await db.close();
   }
