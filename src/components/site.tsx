@@ -5,6 +5,7 @@ import { ArrowUpRight, ArrowDown, X, MoveRight, Check } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { useStudio } from "./studio-provider";
 import { HeroScene } from "./hero-scene";
+import { PrintTeaser } from "./print-shop";
 import { MotifGallery } from "./motif-gallery";
 import { LineSidebar } from "./line-sidebar";
 import { ReflectiveWork } from "./reflective-work";
@@ -59,6 +60,7 @@ export function Footer() {
       </Link>
       <p>Tattoos & Spiegelgravuren · Bochum</p>
       <div>
+        <Link href="/prints">Prints</Link>
         <Link href="/legal">Rechtliches</Link>
         <Link href="/admin">Atelier</Link>
         <a
@@ -192,6 +194,7 @@ export function Home() {
             </span>
           </ReflectiveWork>
         </section>
+        <PrintTeaser />
         <section id="artist" className="section artist">
           <Reveal className="artist-art">
             <img

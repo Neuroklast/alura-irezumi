@@ -9,9 +9,11 @@ create table if not exists public.shop_orders (
   items jsonb not null check(jsonb_typeof(items) = 'array'),
   shipping integer not null check(shipping >= 0), total integer not null check(total > 0),
   return_status text not null default 'none' check(return_status in ('none','requested','received','closed')),
+  refunded integer not null default 0,
   note text not null default '', version integer not null default 0,
   created_at timestamptz not null default now()
 );
+alter table public.shop_orders add column if not exists refunded integer not null default 0;
 create index if not exists shop_orders_created on public.shop_orders(created_at desc);
 create index if not exists shop_orders_payment_intent on public.shop_orders(payment_intent);
 create table if not exists public.shop_events (id text primary key, created_at timestamptz not null default now());
@@ -80,7 +82,7 @@ begin
     if o.payment = 'pending' then
       update public.shop_orders set payment='paid', session_id=p_session, payment_intent=p_intent,
         customer=p_customer,email=p_email,address=p_address,version=version+1,
-        items=(select jsonb_agg(case when value->>'fulfillment' = 'manual' then jsonb_set(value,'{status}','"ready"') else value end) from jsonb_array_elements(o.items))
+        items=(select jsonb_agg(case when value->>'fulfillment' = 'manual' and value->>'status' = 'blocked' then jsonb_set(value,'{status}','"ready"') else value end) from jsonb_array_elements(o.items))
       where id=p_order;
       insert into public.shop_notifications(order_id,kind) values(p_order,'paid') on conflict do nothing;
     end if;
@@ -128,9 +130,31 @@ begin
     update public.shop_orders set payment='refunded',version=version+1,
       items=(select jsonb_agg(case when value->>'status' <> 'shipped' then jsonb_set(value,'{status}','"cancelled"') else value end) from jsonb_array_elements(o.items)) where id=o.id;
   elsif p_refunded > 0 and o.payment <> 'refunded' then
-    update public.shop_orders set payment='partially_refunded',version=version+1 where id=o.id;
+    update public.shop_orders set payment='partially_refunded',refunded=greatest(refunded,p_refunded),version=version+1 where id=o.id;
   end if;
   insert into public.shop_notifications(order_id,kind) values(o.id,'refund') on conflict do nothing;
 end $$;
 revoke all on function public.apply_print_refund(text,text,integer) from public, anon, authenticated;
 grant execute on function public.apply_print_refund(text,text,integer) to service_role;
+
+alter table public.shop_orders add column if not exists refunded integer not null default 0;
+-- Keep the cumulative refund for net sales statistics.
+create or replace function public.capture_print_refund() returns trigger
+language plpgsql set search_path = '' as $$
+begin
+  if new.payment = 'refunded' then new.refunded := new.total; end if;
+  return new;
+end $$;
+drop trigger if exists capture_print_refund on public.shop_orders;
+create trigger capture_print_refund before update on public.shop_orders for each row execute function public.capture_print_refund();
+create or replace function public.print_shop_summary() returns jsonb
+language sql stable security invoker set search_path = '' as $$
+  select jsonb_build_object(
+    'orders',count(*),'pending',count(*) filter(where payment='pending'),
+    'sales',coalesce(sum(total-refunded) filter(where payment in ('paid','partially_refunded')),0),
+    'sold',coalesce((select sum((i->>'quantity')::integer) from public.shop_orders s, jsonb_array_elements(s.items) i where s.payment in ('paid','partially_refunded')),0),
+    'popular',coalesce((select jsonb_agg(x) from (select i->>'title' title,sum((i->>'quantity')::integer) quantity from public.shop_orders s,jsonb_array_elements(s.items) i where s.payment in ('paid','partially_refunded') group by i->>'title' order by sum((i->>'quantity')::integer) desc limit 5) x),'[]'::jsonb)
+  ) from public.shop_orders;
+$$;
+revoke all on function public.print_shop_summary() from public,anon;
+grant execute on function public.print_shop_summary() to authenticated;

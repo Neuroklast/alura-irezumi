@@ -160,3 +160,53 @@ Die Tattoo-Motivdateien enthalten ausschließlich schwarze Konturpfade ohne Hint
 Die Hautvorschau nutzt das vom Auftraggeber ausdrücklich ausgewählte zweite Bild `image(20261018-111319).png`. Die frühere Makroaufnahme wurde entfernt. Die Datei wird vollständig als WebP übernommen. Die Herkunft steht in `public/art/licenses.json`; eine unabhängige Stock-Lizenz wurde nicht mitgeliefert und wird nicht behauptet. Es handelt sich um eine Materialvorschau, nicht um ein Foto eines ausgeführten Tattoos.
 
 Die deutschen Pokémon-Namen wurden anhand offizieller Pokémon-Seiten geprüft. Das Motiv mit brennendem Knochen ist Alola-Knogga: https://www.pokemon.com/de/pokemon-sammelkartenspiel/Produktgalerie/kollektion-alola-knogga-gx .
+
+## Prints & Bestellungen
+
+`/prints` zeigt Kunstdrucke mit Format-, Papier- und Editionsvarianten sowie Warenkorb. Der Einstieg steht unterhalb des Spiegelbereichs. Die Hero-Szene, deren Perspektive und der Materialwechsel wurden dafür nicht geändert. Produkte verweisen über `artworkId` auf „Arbeiten & Motive“. Ein Bild muss dadurch nur an einer Stelle gepflegt werden.
+
+Im Atelier gibt es **Print-Produkte** und **Bestellungen**. Produkte können als Entwurf angelegt oder im Shop angezeigt werden. Varianten haben Endpreise in Cent, eine Gesamtauflage oder unbegrenzten Bestand, „auf Bestellung“ und eine eigene Versandart. Eine begrenzte Auflage ist die **Gesamtmenge**, nicht ein manuell nach jeder Bestellung herunterzuzählender Restbestand. Reservierte und verkaufte Exemplare werden serverseitig davon abgezogen. Bereits gespeicherte Bestellungen behalten ihre Produkt-, Preis- und Versanddaten, auch nach Änderungen am Katalog.
+
+Die Standard-Versandart bleibt zunächst **Noch offen**. Pro Variante ist eine Abweichung möglich. So ist später ein Mischbetrieb aus Selbstversand und Print-on-Demand möglich. `ManualFulfillmentProvider` gibt bezahlte Positionen für die Bearbeitung frei. `PrintOnDemandProvider` ist eine ausdrücklich deaktivierte Schnittstelle. Es wird kein Anbieter automatisch ausgewählt, kein Produktionsauftrag gesendet und kein externer Account benötigt.
+
+### Demo ausprobieren
+
+1. Unter `/prints` Format auswählen und Prints in den Warenkorb legen.
+2. „Demo-Bestellung auslösen“ simuliert eine erfolgreiche Zahlung, ohne persönliche Daten zu erfassen oder einen Dienst anzusprechen.
+3. „Im Atelier ansehen“ öffnet die Bestellungen. Die Bestellung bleibt in demselben Browser sichtbar, auch nach einem Neuladen.
+4. Versandart einer Position auf Selbstversand ändern, Bearbeitung wählen und **Bestellung speichern**. Versandnummer, Retourenstatus und interne Notiz sind bearbeitbar.
+
+Die Katalogpreise, Papiere und angebotenen Prints der Demo sind **Beispielwerte**, keine von Laura bestätigten Angebote. Die vorhandenen Wannados werden als Produktvorschau verwendet. Für einen bestehenden Live-Datenbestand ohne Shop-Feld wird **kein** Demokatalog veröffentlicht. Dort startet der Katalog leer.
+
+Demobestellungen stehen unter `alura-print-demo-v1`, der Warenkorb unter `alura-print-cart-v1`. Unter Bestellungen lassen sich ausschließlich die Demobestellungen zurücksetzen. Ein Speicherausfall wird angezeigt, die laufende Sitzung bleibt bedienbar. Es werden in der Demo keine E-Mails verschickt. Der Shop verwendet keine zusätzlichen Cookies oder Analysewerkzeuge.
+
+### Livebetrieb vorbereiten
+
+Der Shop nimmt standardmäßig **keine echten Bestellungen** an. Für die spätere Inbetriebnahme:
+
+1. Nach `schema.sql` die additive, erneut ausführbare Migration **`supabase/shop.sql`** ausführen. Sie legt Bestellungen, Zahlungsereignisse und eine Benachrichtigungswarteschlange mit RLS an.
+2. In Supabase einen Admin wie oben einrichten. `SUPABASE_SERVICE_ROLE_KEY` und die bereits beschriebene `RATE_LIMIT_SECRET` setzen. Der Checkout verwendet denselben atomaren Rate-Limiter mit einem separaten Shop-Fingerprint. Der Live-Checkout benötigt Vercels vertrauenswürdigen IP-Header.
+3. Eigene freigegebene Printprodukte erstellen. Motiv- und Verkaufsrechte, Endpreise, Steuerbehandlung, Versandkosten, Lieferzeiten, Anbieterangaben, Widerruf und Datenschutz vervollständigen. Die Demoangaben nicht ungeprüft als Verkaufsangebot verwenden. `Lieferzeit & Versandhinweis` ausfüllen. Der aktuelle Live-Adapter unterstützt Versand nach Deutschland und Selbstversand. Varianten mit offener Versandart oder ohne angeschlossenen POD-Anbieter bleiben gesperrt.
+4. Stripe-Schlüssel zunächst aus der **Testumgebung** setzen. Einen Webhook an `https://DEINE-DOMAIN/api/shop/webhook` anlegen. Ereignisse: `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `checkout.session.expired`, `charge.refunded`. Webhook-Version mit der API-Version des gepinnten Stripe-SDK abstimmen. Das zugehörige Signaturgeheimnis als `STRIPE_WEBHOOK_SECRET` setzen.
+5. `SHOP_ORIGIN` auf die tatsächliche HTTPS-Shop-Domain setzen. Checkout ist nur dort verfügbar. `SHOP_ENABLED=true` erst setzen, wenn die vorbereitenden Punkte abgeschlossen sind. Preview-Domains nehmen keine Käufe an. Eine Rückkehr auf die Erfolgsseite ändert **keinen** Zahlungsstatus und leert nicht stillschweigend den Warenkorb.
+6. Mit Stripe-Testzahlungen einschließlich Abbruch, Ablauf, Erstattung und Webhook-Wiederholung durchtesten. Erst danach echte Schlüssel verwenden. `SHOP_ENABLED=false` pausiert neue Verkäufe. Webhooks für bestehende Zahlungen bleiben aktiv, solange Live-Supabase und die Schlüssel weiter konfiguriert sind.
+
+Der Checkout löst IDs und Mengen serverseitig gegen den veröffentlichten Katalog auf. Eine PostgreSQL-Transaktion sperrt den Katalog während der Bestandsprüfung und verhindert Überverkäufe sowie veraltete Reservierungen. Stripe-Anfragen verwenden einen stabilen Idempotenzschlüssel. Nur ein signiertes Zahlungsereignis mit passender Bestellung, Session, Währung und Gesamtsumme setzt „Bezahlt“. Ereignis und Bestelländerung werden gemeinsam gespeichert. Wiederholungen lösen keine zweite Freigabe aus. Karteninformationen werden nicht in dieser Anwendung gespeichert.
+
+Bestellbearbeitung erfordert sowohl serverseitig `app_metadata.role=admin` als auch die entsprechende Datenbankberechtigung. Browser dürfen Bestellungen weder anlegen noch den Zahlungsstatus direkt ändern. Der einzige öffentliche Weg zum Anlegen einer echten Bestellung ist der begrenzte, ausdrücklich freigeschaltete Checkout. Bestelldaten und Benachrichtigungen erscheinen nicht in öffentlichen Inhalten. Konfigurierte Datenbankfehler werden angezeigt und niemals durch Demobestellungen ersetzt.
+
+Reservierungen werden erst durch ein bestätigtes Ablauf-/Fehlerereignis freigegeben. Ein abgebrochener Seitenbesuch allein reicht nicht. Bei einem Netzwerkabbruch vor der Session-Zuordnung denselben Checkout erneut versuchen. Bleibt eine Reservierung ohne zugeordnete Stripe-Session liegen, muss sie nach Abgleich im Stripe-Dashboard manuell geklärt werden. Es gibt dafür noch keinen automatischen Reconciliation-Job. Zurückgegebene oder erstattete Ware wird nicht automatisch neu zum Verkauf freigegeben. So werden beschädigte oder noch nicht eingegangene Rücksendungen nicht erneut verkauft.
+
+### Zahlung, Retouren und Auswertung
+
+Bearbeitung und Zahlung sind getrennt. Laura kann Retouren als angefragt, eingegangen und abgeschlossen markieren. Eine Änderung des Versand- oder Retourenstatus führt **keine** Zahlung oder Erstattung aus. Erstattungen und Zahlungsstornos erfolgen im Stripe-Dashboard, erreichbar über die jeweilige Bestellung. Der signierte Refund-Webhook übernimmt vollständige und teilweise Erstattungen. Noch nicht versandte Positionen einer vollständig erstatteten Bestellung werden gestoppt. Der Shop löst keine automatischen Teilproduktionsaufträge aus.
+
+Die Auswertung im Atelier umfasst Bestellanzahl, offene Zahlungen, verkaufte Prints und Umsatz nach bestätigten Erstattungen, einschließlich Versand. Im Livebetrieb wird über alle Bestellungen aggregiert, unabhängig von der Pagination der Liste. Teilweise erstattete Bestellungen zählen bei den Stückzahlen weiter, weil eine Teilerstattung nicht eindeutig einzelnen Exemplaren zugeordnet ist. Die Auswertung ist keine Buchhaltung und enthält keine Zahlungsanbietergebühren.
+
+### Benachrichtigungen
+
+Bezahlte Bestellungen, Zahlungsprobleme und Erstattungen erzeugen eine beständige Benachrichtigung in Supabase. Für optionale E-Mails an Laura kann Resend über `RESEND_API_KEY`, `SHOP_NOTIFY_FROM` und `SHOP_NOTIFY_TO` eingerichtet werden. Empfänger und verifizierter Absender kommen ausschließlich aus Servervariablen. Die E-Mail enthält Bestellnummer und Admin-Link, keine Lieferadresse. Ohne diese Konfiguration bleibt die Meldung im Atelier sichtbar und es wird nichts versendet.
+
+Der Versand erfolgt nach dem Webhook über Next.js `after()`. Fehler bleiben in der Warteschlange sichtbar. Unter Bestellungen kann der Versand erneut angestoßen werden. Ein stabiler Idempotenzschlüssel begrenzt doppelte Zustellungen innerhalb des Idempotenzfensters des Mailanbieters. Es gibt noch keinen zeitgesteuerten Hintergrundjob. Bestellbestätigungen an Käufer, Rechnungen, Versandetiketten, ein POD-Anbieter und ein automatischer Retourenprozess sind nicht enthalten. Lösch- und Aufbewahrungsfristen für Bestellungen müssen vor Echtbetrieb festgelegt werden.
+
+Shop-Tests prüfen die echte SQL-Migration mit einer eingebetteten PostgreSQL-Instanz (PGlite), darunter RLS, Transaktionen, begrenzten Bestand, Katalogrevisionen, unveränderliche Bestellpreise, parallele Bearbeitung über Versionsprüfung, Webhook-Deduplizierung und Erstattungen. Das ersetzt keine integrierten Testzahlungen mit den tatsächlichen Stripe-, Supabase- und Mailkonten.

@@ -21,7 +21,10 @@ export default function Page() {
           Im Demo-Modus werden Atelier-Einstellungen und hochgeladene Demobilder
           nur im lokalen Browserspeicher gespeichert. Du kannst sie im Atelier
           über „Demo zurücksetzen“ löschen. Demo-Anfragen werden nicht
-          gespeichert oder versendet.
+          gespeichert oder versendet. Der Print-Warenkorb und Demobestellungen
+          liegen ebenfalls nur in diesem Browser. Demobestellungen können im
+          Atelier unter Bestellungen zurückgesetzt werden. Es erfolgen dabei
+          weder Zahlung noch Versand.
         </p>
         <p>
           Die Live-Konfiguration kann Supabase für Anmeldung, Inhalte und
@@ -29,6 +32,16 @@ export default function Page() {
           fallen technische Zugriffsdaten beim Hostinganbieter an. Externe
           Instagram-Links öffnen erst nach einem Klick die externe Website. Es
           sind keine Analysewerkzeuge oder Instagram-Einbettungen eingebaut.
+        </p>
+        <h2>Print-Shop</h2>
+        <p>
+          Echte Print-Bestellungen bleiben bis zur ausdrücklichen Freischaltung
+          deaktiviert. Vor dem Verkauf müssen Anbieterangaben, Preise, Steuern,
+          Lieferbedingungen, Widerrufsbelehrung und Datenschutz ergänzt werden.
+          Bei einer späteren Aktivierung werden Bestellungen in Supabase
+          gespeichert, Zahlungen über Stripe abgewickelt und optionale
+          Benachrichtigungen über einen separat eingerichteten Maildienst
+          versendet. Diese Vorlage ist keine fertige Shop-Rechtstextfassung.
         </p>
         <p>
           Vor der Live-Nutzung sind verantwortliche Anbieterin,

@@ -14,6 +14,8 @@ import "./readability.css";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import { getContent } from "@/lib/content";
 import { isDemo, integrationStatus } from "@/lib/config";
+import { ShopProvider } from "@/components/shop-provider";
+import "./shop.css";
 import { StudioProvider } from "@/components/studio-provider";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -39,8 +41,10 @@ export default async function RootLayout({
           demo={isDemo()}
           integrations={integrationStatus()}
         >
-          <SmoothScroll />
-          {children}
+          <ShopProvider>
+            <SmoothScroll />
+            {children}
+          </ShopProvider>
         </StudioProvider>
       </body>
     </html>

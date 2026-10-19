@@ -15,6 +15,7 @@ import {
   LogOut,
   Mail,
 } from "lucide-react";
+import { ShopProducts, ShopOrders, ShopOrderOverview } from "./shop-admin";
 import { useStudio } from "./studio-provider";
 import { HeroScene } from "./hero-scene";
 import { motifs, type MotifKey } from "@/lib/motifs";
@@ -39,6 +40,10 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
     [uploading, setUploading] = useState(false),
     [editing, setEditing] = useState<Artwork | null>(null),
     [dirty, setDirty] = useState(false);
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("tab") === "orders")
+      setTab("orders");
+  }, []);
   useEffect(() => {
     if (!dirty) return;
     const warn = (e: BeforeUnloadEvent) => {
@@ -109,6 +114,8 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
             { id: "hero", label: "Startbild", icon: Settings2 },
             { id: "works", label: "Arbeiten & Motive", icon: Layers },
             { id: "enquiries", label: "Anfragen", icon: Mail },
+            { id: "prints", label: "Print-Produkte", icon: Layers },
+            { id: "orders", label: "Bestellungen", icon: Mail },
             { id: "settings", label: "Profil & Texte", icon: ImagePlus },
           ].map(({ id, label, icon: Icon }) => (
             <button
@@ -156,17 +163,27 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
                     ? "Arbeiten & Motive"
                     : tab === "enquiries"
                       ? "Anfragen"
-                      : "Profil & Texte"}
+                      : tab === "prints"
+                        ? "Print-Produkte"
+                        : tab === "orders"
+                          ? "Bestellungen"
+                          : "Profil & Texte"}
             </h1>
           </div>
-          <button
-            className="button light"
-            disabled={busy || !ready}
-            onClick={persist}
-          >
-            <Save size={16} />
-            {busy ? "Speichert…" : dirty ? "Änderungen speichern" : "Speichern"}
-          </button>
+          {tab !== "orders" && (
+            <button
+              className="button light"
+              disabled={busy || !ready}
+              onClick={persist}
+            >
+              <Save size={16} />
+              {busy
+                ? "Speichert…"
+                : dirty
+                  ? "Änderungen speichern"
+                  : "Speichern"}
+            </button>
+          )}
         </header>
         <div className="admin-body">
           {demo && (
@@ -230,6 +247,7 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
                   <small>Motive zum Anfragen</small>
                 </div>
               </div>
+              <ShopOrderOverview onOpen={() => setTab("orders")} />
               <div className="admin-overview-grid">
                 <div className="panel">
                   <div className="panel-heading">
@@ -274,6 +292,10 @@ export function Admin({ enquiries = [] }: { enquiries?: Enquiry[] }) {
               </div>
             </>
           )}
+          {tab === "prints" && (
+            <ShopProducts onChange={(shop) => update({ ...content, shop })} />
+          )}
+          {tab === "orders" && <ShopOrders />}
           {tab === "hero" && (
             <div className="hero-editor">
               <div className="panel">

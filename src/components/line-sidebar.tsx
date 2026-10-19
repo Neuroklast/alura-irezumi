@@ -14,8 +14,9 @@ const chapters = [
   { kanji: "一", label: "Anfang", id: "main" },
   { kanji: "二", label: "Arbeiten", id: "selected" },
   { kanji: "三", label: "Spiegel", id: "glass" },
-  { kanji: "四", label: "Laura", id: "artist" },
-  { kanji: "五", label: "Anfragen", id: "booking" },
+  { kanji: "四", label: "Prints", id: "prints" },
+  { kanji: "五", label: "Laura", id: "artist" },
+  { kanji: "六", label: "Anfragen", id: "booking" },
 ];
 export function LineSidebar() {
   const path = usePathname();
@@ -73,9 +74,11 @@ export function LineSidebar() {
                 ? active === chapter.id
                 : path === "/work"
                   ? chapter.id === "selected"
-                  : path === "/contact"
-                    ? chapter.id === "booking"
-                    : false
+                  : path === "/prints"
+                    ? chapter.id === "prints"
+                    : path === "/contact"
+                      ? chapter.id === "booking"
+                      : false
             }
           />
         ))}

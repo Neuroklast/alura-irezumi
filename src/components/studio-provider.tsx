@@ -36,7 +36,10 @@ export function StudioProvider({
         if (raw) {
           const parsed = contentSchema.safeParse(JSON.parse(raw));
           if (parsed.success) {
-            setContent({ ...upgradeSeededContent(parsed.data), shop: JSON.parse(raw).shop ? parsed.data.shop : initial.shop });
+            setContent({
+              ...upgradeSeededContent(parsed.data),
+              shop: JSON.parse(raw).shop ? parsed.data.shop : initial.shop,
+            });
           }
         }
       } catch {
