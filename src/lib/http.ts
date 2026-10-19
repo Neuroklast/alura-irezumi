@@ -6,7 +6,7 @@ export function sameOrigin(req: Request) {
 export function failure(error: string, status = 400) {
   return NextResponse.json({ error }, { status });
 }
-export async function boundedJson(req: Request, maxBytes = 64_000) {
+export async function boundedText(req: Request, maxBytes = 64_000) {
   const reader = req.body?.getReader();
   if (!reader) throw new Error("Leere Anfrage");
   const chunks: Uint8Array[] = [];
@@ -21,5 +21,9 @@ export async function boundedJson(req: Request, maxBytes = 64_000) {
     }
     chunks.push(value);
   }
-  return JSON.parse(Buffer.concat(chunks).toString("utf8"));
+  return Buffer.concat(chunks).toString("utf8");
+}
+
+export async function boundedJson(req: Request, maxBytes = 64_000) {
+  return JSON.parse(await boundedText(req, maxBytes));
 }

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { shopSchema, emptyShop } from "./shop/schema";
 const image = z
   .string()
   .max(4_200_000)
@@ -43,6 +44,7 @@ export const contentSchema = z.object({
     .refine((v) => new URL(v).hostname === "www.instagram.com"),
   scene: sceneSchema,
   works: z.array(artworkSchema).max(60),
+  shop: shopSchema.default(emptyShop),
 });
 export type Content = z.infer<typeof contentSchema>;
 export type Artwork = z.infer<typeof artworkSchema>;

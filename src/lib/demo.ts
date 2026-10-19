@@ -1,5 +1,8 @@
 import type { Content } from "./schema";
+import { demoCatalog } from "./shop/core";
+import { emptyShop } from "./shop/schema";
 export const demoContent: Content = {
+  shop: emptyShop,
   artist: "Laura",
   bio: "Hi, ich bin Laura. Ich tätowiere bei NEO TOKYO in Bochum und graviere Spiegel. Hier findest du meine Motive. Wenn dir eins gefällt oder du eine eigene Idee hast, schreib mir gern.",
   instagram: "https://www.instagram.com/alura.irezumi/",
@@ -43,3 +46,5 @@ export const demoContent: Content = {
     },
   ],
 };
+
+demoContent.shop = demoCatalog(demoContent.works);
