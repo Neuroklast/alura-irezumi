@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     const db = await supabase();
     const { data, error } = await db.auth.signInWithPassword(input);
     if (error || data.user?.app_metadata.role !== "admin") {
-      await db.auth.signOut();
+      await db.auth.signOut({ scope: "local" });
       return failure("Anmeldung fehlgeschlagen.", 401);
     }
     return NextResponse.json({ ok: true });
@@ -29,7 +29,8 @@ export async function DELETE(req: Request) {
   if (!sameOrigin(req)) return failure("Ungültiger Ursprung.", 403);
   if (!isDemo()) {
     const db = await supabase();
-    await db.auth.signOut();
+    const { error } = await db.auth.signOut({ scope: "local" });
+    if (error) return failure("Abmelden fehlgeschlagen.", 503);
   }
   return NextResponse.json({ ok: true });
 }
