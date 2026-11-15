@@ -16,3 +16,7 @@
 ## Root-cause and safe-session policy
 
 Never ship lazy/dirty quick fixes, stubs, no-op actions, swallowed Supabase errors or fake success. Fix the canonical cause with negative-path tests. A failed read is not absent data, and must not trigger demo/editor defaults. All mutations must be explicit POST/DELETE actions, not GET, rendering or serverless startup. Routine logout only revokes the current session, preserves other devices/OAuth refresh sessions, and checks sign-out errors. Report CI and live verification honestly.
+
+## Enforced living documentation
+
+Every source/config/workflow PR must add a dated entry to docs/QUALITY_JOURNAL.md and update the canonical owner documents from docs/living-docs.json. See docs/ARCHITECTURE_QUALITY.md for evidence and known limits. The independent Living docs gate checks the real PR diff and Node contract tests, but humans must review factual correctness. Configure branch protection to require the status; do not deploy or migrate from this check.
